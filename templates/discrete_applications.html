@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>离散动力学实际应用</title>
+    <!-- Theme CSS -->
+    <link rel="stylesheet" href="/static/css/theme.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <style>
+        .app-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #333;
+        }
+
+        .tab {
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            border-radius: 10px 10px 0 0;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .tab:hover {
+            background: linear-gradient(135deg, #2a2a2a, #3a3a3a);
+            transform: translateY(-2px);
+        }
+
+        .tab.active {
+            background: linear-gradient(135deg, #00c9ff, #92fe9d);
+            color: #000;
+            font-weight: bold;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .control-panel {
+            background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            border: 1px solid #444;
+        }
+
+        .param-group {
+            margin-bottom: 20px;
+        }
+
+        .param-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #00c9ff;
+            font-weight: bold;
+        }
+
+        .param-input {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+
+        .param-input input[type="number"],
+        .param-input input[type="range"] {
+            flex: 1;
+            padding: 10px;
+            background: #0a0a0a;
+            border: 1px solid #444;
+            border-radius: 8px;
+            color: #fff;
+        }
+
+        .param-input input[type="range"] {
+            -webkit-appearance: none;
+            height: 8px;
+            background: #333;
+            outline: none;
+        }
+
+        .param-input input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: linear-gradient(135deg, #00c9ff, #92fe9d);
+            cursor: pointer;
+            border-radius: 50%;
+        }
+
+        .param-input span {
+            min-width: 60px;
+            color: #92fe9d;
+            font-weight: bold;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #00c9ff, #92fe9d);
+            border: none;
+            border-radius: 8px;
+            color: #000;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 201, 255, 0.4);
+        }
+
+        .action-btn.secondary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+
+        .visualization-area {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .chart-container {
+            background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+            padding: 20px;
+            border-radius: 15px;
+            border: 1px solid #444;
+            height: 450px;
+            max-height: 450px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chart-container h3 {
+            color: #00c9ff;
+            margin-bottom: 15px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        canvas {
+            width: 100%;
+            flex: 1;
+            min-height: 0;
+            background: #0a0a0a;
+            border-radius: 10px;
+        }
+
+        .info-panel {
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+            padding: 20px;
+            border-radius: 15px;
+            border: 1px solid #444;
+        }
+
+        .info-panel h3 {
+            color: #92fe9d;
+            margin-bottom: 15px;
+        }
+
+        .info-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .info-item {
+            background: #0a0a0a;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #00c9ff;
+        }
+
+        .info-item strong {
+            color: #00c9ff;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .info-item span {
+            color: #fff;
+            font-size: 18px;
+        }
+
+        .description {
+            background: linear-gradient(135deg, #0a0a0a, #1a1a1a);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            border-left: 5px solid #92fe9d;
+        }
+
+        .description h2 {
+            color: #92fe9d;
+            margin-bottom: 10px;
+        }
+
+        .description p {
+            color: #ccc;
+            line-height: 1.6;
+        }
+
+        .equation-display {
+            background: #0a0a0a;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            color: #00c9ff;
+            text-align: center;
+            font-size: 18px;
+        }
+
+        @media (max-width: 768px) {
+            .visualization-area {
+                grid-template-columns: 1fr;
+            }
+            .tabs {
+                flex-wrap: wrap;
+            }
+            .tab {
+                flex: 1;
+                min-width: 150px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <h1 style="text-align: center; color: #00c9ff; margin-bottom: 30px;">
+            🎯 离散动力学实际应用
+        </h1>
+
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab(event, 'population')">🐟 种群动态</button>
+            <button class="tab" onclick="switchTab(event, 'epidemic')">🦠 传染病模型</button>
+            <button class="tab" onclick="switchTab(event, 'economy')">💹 经济周期</button>
+            <button class="tab" onclick="switchTab(event, 'predator')">🦁 捕食者模型</button>
+        </div>
+
+        <!-- 种群动态应用 -->
+        <div id="population" class="tab-content active">
+            <div class="description">
+                <h2>🐟 Ricker种群模型</h2>
+                <p>
+                    Ricker模型用于描述鱼类等生物种群的动态变化，考虑了资源竞争和过度拥挤效应。
+                    模型公式：<strong>N<sub>t+1</sub> = N<sub>t</sub> · exp(r(1 - N<sub>t</sub>/K))</strong>
+                </p>
+                <p>
+                    参数说明：r为内禀增长率，K为环境承载力。该模型可以展现从稳定到混沌的转变。
+                </p>
+            </div>
+
+            <div class="control-panel">
+                <div class="param-group">
+                    <label>内禀增长率 r：</label>
+                    <div class="param-input">
+                        <input type="range" id="pop_r" min="0.1" max="3.5" step="0.1" value="2.0">
+                        <span id="pop_r_val">2.0</span>
+                    </div>
+                </div>
+                <div class="param-group">
+                    <label>承载力 K：</label>
+                    <div class="param-input">
+                        <input type="number" id="pop_K" value="100" min="10" max="200">
+                    </div>
+                </div>
+                <div class="param-group">
+                    <label>初始种群 N₀：</label>
+                    <div class="param-input">
+                        <input type="number" id="pop_N0" value="10" min="1" max="150">
+                    </div>
+                </div>
+                <div class="button-group">
+                    <button class="action-btn" onclick="runPopulation()">▶️ 运行模拟</button>
+                    <button class="action-btn secondary" onclick="bifurcationPopulation()">📊 分岔图</button>
+                </div>
+            </div>
+
+            <div class="visualization-area">
+                <div class="chart-container">
+                    <h3>种群时间序列</h3>
+                    <canvas id="pop_timeseries"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h3>相图 (N<sub>t+1</sub> vs N<sub>t</sub>)</h3>
+                    <canvas id="pop_phase"></canvas>
+                </div>
+                <div class="info-panel">
+                    <h3>📈 分析结果</h3>
+                    <div class="info-content" id="pop_info"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 传染病模型 -->
+        <div id="epidemic" class="tab-content">
+            <div class="description">
+                <h2>🦠 离散SIR传染病模型</h2>
+                <p>
+                    SIR模型将人群分为易感者(S)、感染者(I)、康复者(R)三类，模拟传染病传播过程。
+                </p>
+                <div class="equation-display">
+                    S<sub>t+1</sub> = S<sub>t</sub> - β·S<sub>t</sub>·I<sub>t</sub><br>
+                    I<sub>t+1</sub> = I<sub>t</sub> + β·S<sub>t</sub>·I<sub>t</sub> - γ·I<sub>t</sub><br>
+                    R<sub>t+1</sub> = R<sub>t</sub> + γ·I<sub>t</sub>
+                </div>
+                <p>
+                    β为传染率，γ为康复率。基本再生数 R₀ = β/γ 决定疫情是否爆发。
+                </p>
+            </div>
+
+            <div class="control-panel">
+                <div class="param-group">
+                    <label>传染率 β：</label>
+                    <div class="param-input">
+                        <input type="range" id="epi_beta" min="0.0001" max="0.001" step="0.0001" value="0.0003">
+                        <span id="epi_beta_val">0.0003</span>
+                    </div>
+                </div>
+                <div class="param-group">
+                    <label>康复率 γ：</label>
+                    <div class="param-input">
+                        <input type="range" id="epi_gamma" min="0.01" max="0.3" step="0.01" value="0.1">
+                        <span id="epi_gamma_val">0.1</span>
+                    </div>
+                </div>
+                <div class="param-group">
+                    <label>总人口：</label>
+                    <div class="param-input">
+                        <input type="number" id="epi_N" value="1000" min="100" max="10000">
+                    </div>
+                </div>
+                <div class="param-group">
+                    <label>初始感染者：</label>
+                    <div class="param-input">
+                        <input type="number" id="epi_I0" value="10" min="1" max="100">
+                    </div>
+                </div>
+                <div class="button-group">
+                    <button class="action-btn" onclick="runEpidemic()">▶️ 运行模拟</button>
+                    <button class="action-btn secondary" onclick="varyParameters()">🔬 参数扫描</button>
+                </div>
+            </div>
+
+            <div class="visualization-area">
+                <div class="chart-container">
+                    <h3>S-I-R时间演化</h3>
+                    <canvas id="epi_timeseries"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h3>相空间轨迹</h3>
+                    <canvas id="epi_phase"></canvas>
+                </div>
+                <div class="info-panel">
+                    <h3>📊 疫情指标</h3>
+                    <div class="info-content" id="epi_info"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 经济周期模型 -->
+        <div id="economy" class="tab-content">
+            <div class="description">
+                <h2>💹 蛛网模型（供需动态）</h2>
+                <p>
+                    蛛网模型描述商品价格和产量的动态调整过程。生产者根据当前价格决定下期产量，
+                    而价格由当期产量和需求决定。
+                </p>
+                <div class="equation-display">
+                    Q<sub>s,t</sub> = α + β·P<sub>t-1</sub> （供给方程）<br>
+                    Q<sub>d,t</sub> = γ - δ·P<sub>t</sub> （需求方程）<br>
+                    均衡：Q<sub>s,t</sub> = Q<sub>d,t</sub>
+                </div>
+            </div>
+
+            <div class="control-panel">
+                <div class="param-group">
+                    <label>供给斜率 β：</label>
+                    <div class="param-input">
+                        <input type="range" id="eco_beta" min="0.1" max="3" step="0.1" value="0.8">
+                        <span id="eco_beta_val">0.8</span>
+                    </div>
+                </div>
+                <div class="param-group">
+                    <label>需求斜率 δ：</label>
+                    <div class="param-input">
+                        <input type="range" id="eco_delta" min="0.1" max="3" step="0.1" value="1.2">
+                        <span id="eco_delta_val">1.2</span>
+                    </div>
+                </div>
+                <div class="param-group">
+                    <label>初始价格 P₀：</label>
+                    <div class="param-input">
+                        <input type="number" id="eco_P0" value="20" min="1" max="50">
+                    </div>
+                </div>
+                <div class="button-group">
+                    <button class="action-btn" onclick="runEconomy()">▶️ 运行模拟</button>
+                    <button class="action-btn secondary" onclick="cobwebEconomy()">📊 相图</button>
+                </div>
+            </div>
+
+            <div class="visualization-area">
+                <div class="chart-container">
+                    <h3>价格-产量时间序列</h3>
+                    <canvas id="eco_timeseries"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h3>价格-产量相图</h3>
+                    <canvas id="eco_cobweb"></canvas>
+                </div>
+                <div class="info-panel">
+                    <h3>💰 经济指标</h3>
+                    <div class="info-content" id="eco_info"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 捕食者-被捕食者模型 -->
+        <div id="predator" class="tab-content">
+            <div class="description">
+                <h2>🦁 离散Lotka-Volterra模型</h2>
+                <p>
+                    描述捕食者和被捕食者种群数量的相互作用和周期性变化。
+                </p>
+                <div class="equation-display">
+                    x<sub>t+1</sub> = x<sub>t</sub> + r·x<sub>t</sub>(1 - x<sub>t</sub>) - α·x<sub>t</sub>·y<sub>t</sub><br>
+                    y<sub>t+1</sub> = y<sub>t</sub> + β·x<sub>t</sub>·y<sub>t</sub> - m·y<sub>t</sub>
+                </div>
+                <p>
+                    x为被捕食者（猎物）数量，y为捕食者数量。r为猎物增长率，α为捕食率，β为转化效率，m为捕食者死亡率。
+                </p>
+            </div>
+
+            <div class="control-panel">
+                <div class="param-group">
+                    <label>猎物增长率 r：</label>
+                    <div class="param-input">
+                        <input type="range" id="pred_r" min="0.1" max="2" step="0.1" value="0.5">
+                        <span id="pred_r_val">0.5</span>
+                    </div>
+                </div>
+                <div class="param-group">
+                    <label>捕食率 α：</label>
+                    <div class="param-input">
+                        <input type="range" id="pred_alpha" min="0.1" max="2" step="0.1" value="0.8">
+                        <span id="pred_alpha_val">0.8</span>
+                    </div>
+                </div>
+                <div class="param-group">
+                    <label>转化效率 β：</label>
+                    <div class="param-input">
+                        <input type="range" id="pred_beta" min="0.1" max="1.5" step="0.1" value="0.6">
+                        <span id="pred_beta_val">0.6</span>
+                    </div>
+                </div>
+                <div class="param-group">
+                    <label>捕食者死亡率 m：</label>
+                    <div class="param-input">
+                        <input type="range" id="pred_m" min="0.1" max="1" step="0.05" value="0.3">
+                        <span id="pred_m_val">0.3</span>
+                    </div>
+                </div>
+                <div class="button-group">
+                    <button class="action-btn" onclick="runPredator()">▶️ 运行模拟</button>
+                    <button class="action-btn secondary" onclick="phasePredator()">🔄 相图</button>
+                </div>
+            </div>
+
+            <div class="visualization-area">
+                <div class="chart-container">
+                    <h3>种群数量时间演化</h3>
+                    <canvas id="pred_timeseries"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h3>捕食者-猎物相图</h3>
+                    <canvas id="pred_phase"></canvas>
+                </div>
+                <div class="info-panel">
+                    <h3>🌍 生态指标</h3>
+                    <div class="info-content" id="pred_info"></div>
+                </div>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 40px; padding: 20px; background: linear-gradient(135deg, #1a1a1a, #2a2a2a); border-radius: 15px;">
+            <a href="/" style="color: #00c9ff; text-decoration: none; font-size: 18px;">🏠 返回主页</a>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="/static/js/discrete_applications.js"></script>
+
+    <!-- Scripts -->
+    <script src="{{ url_for('static', filename='js/theme-toggle.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/layout-horizontal.js') }}"></script>
+</body>
+</html>

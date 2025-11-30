@@ -1,0 +1,722 @@
+/* ========================================
+   🎨 动力学系统分析器 - 动画特效系统
+   ========================================
+   包含所有推荐的动态特效实现
+   ======================================== */
+
+/* ========== 1. 粒子背景容器 ========== */
+#particles-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.6;
+}
+
+/* ========== 2. 卡片3D倾斜效果 ========== */
+.card-3d-tilt {
+    transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1),
+                box-shadow 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+    transform-style: preserve-3d;
+    will-change: transform;
+}
+
+.card-3d-tilt:hover {
+    box-shadow: 0 20px 60px rgba(102, 126, 234, 0.35);
+}
+
+/* 3D倾斜光泽效果 */
+.card-3d-tilt::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 50%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    border-radius: inherit;
+}
+
+.card-3d-tilt:hover::after {
+    opacity: 1;
+}
+
+/* ========== 3. 按钮波纹点击效果 ========== */
+.btn-ripple {
+    position: relative;
+    overflow: hidden;
+    transform: translate3d(0, 0, 0);
+}
+
+.btn-ripple::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.6);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.btn-ripple:active::before {
+    width: 300px;
+    height: 300px;
+    transition: width 0s, height 0s;
+}
+
+/* 波纹动画 */
+@keyframes ripple-animation {
+    0% {
+        transform: translate(-50%, -50%) scale(0);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(4);
+        opacity: 0;
+    }
+}
+
+.ripple-effect {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.6);
+    pointer-events: none;
+    animation: ripple-animation 0.6s ease-out;
+}
+
+/* ========== 4. 骨架屏加载动画 ========== */
+.skeleton {
+    background: linear-gradient(
+        90deg,
+        var(--muted) 0%,
+        var(--accent) 50%,
+        var(--muted) 100%
+    );
+    background-size: 200% 100%;
+    animation: skeleton-loading 1.5s ease-in-out infinite;
+    border-radius: 8px;
+}
+
+@keyframes skeleton-loading {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+/* 骨架屏卡片 */
+.skeleton-card {
+    padding: 20px;
+    background: var(--card);
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+.skeleton-line {
+    height: 16px;
+    margin-bottom: 12px;
+}
+
+.skeleton-line:last-child {
+    width: 60%;
+}
+
+.skeleton-circle {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+}
+
+/* ========== 5. 按钮悬停渐变移动 ========== */
+.btn-gradient-shift {
+    background: linear-gradient(
+        135deg,
+        var(--primary) 0%,
+        #5a7ae8 50%,
+        var(--primary) 100%
+    );
+    background-size: 200% 200%;
+    transition: background-position 0.5s ease, transform 0.3s ease;
+}
+
+.btn-gradient-shift:hover {
+    background-position: 100% 0;
+    transform: translateY(-2px);
+}
+
+/* ========== 6. 脉冲呼吸效果 ========== */
+@keyframes pulse-breath {
+    0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    }
+    50% {
+        transform: scale(1.05);
+        box-shadow: 0 8px 30px rgba(102, 126, 234, 0.5);
+    }
+}
+
+.btn-pulse {
+    animation: pulse-breath 2s ease-in-out infinite;
+}
+
+/* ========== 7. 数值滚动计数动画 ========== */
+.counter-animate {
+    display: inline-block;
+    transition: all 0.3s ease;
+}
+
+/* ========== 8. 图表路径描绘动画 ========== */
+@keyframes draw-path {
+    0% {
+        stroke-dashoffset: 1000;
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        stroke-dashoffset: 0;
+        opacity: 1;
+    }
+}
+
+.path-animate {
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+    animation: draw-path 2s ease-out forwards;
+}
+
+/* ========== 9. 轨迹粒子流动效果 ========== */
+@keyframes particle-flow {
+    0% {
+        transform: translateX(0) translateY(0);
+        opacity: 1;
+    }
+    100% {
+        transform: translateX(100px) translateY(100px);
+        opacity: 0;
+    }
+}
+
+.trajectory-particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: radial-gradient(circle, var(--primary), transparent);
+    border-radius: 50%;
+    animation: particle-flow 3s linear infinite;
+}
+
+/* ========== 10. 输入框焦点光晕动画 ========== */
+.input-glow {
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.input-glow:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.15);
+    transform: translateY(-1px);
+}
+
+/* 光晕扩散效果 */
+@keyframes glow-pulse {
+    0%, 100% {
+        box-shadow: 0 0 5px rgba(102, 126, 234, 0.3);
+    }
+    50% {
+        box-shadow: 0 0 20px rgba(102, 126, 234, 0.6);
+    }
+}
+
+.input-glow:focus {
+    animation: glow-pulse 2s ease-in-out infinite;
+}
+
+/* ========== 11. 侧边栏滑动动画 ========== */
+@keyframes slide-in-left {
+    0% {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slide-out-left {
+    0% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    100% {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+}
+
+.sidebar-animate-in {
+    animation: slide-in-left 0.4s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+}
+
+.sidebar-animate-out {
+    animation: slide-out-left 0.3s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+}
+
+/* ========== 12. 标签页切换滑动指示器 ========== */
+.tab-indicator {
+    position: absolute;
+    bottom: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--primary), #5a7ae8);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 2px 2px 0 0;
+}
+
+/* ========== 13. 卡片翻转动画 ========== */
+.card-flip-container {
+    perspective: 1000px;
+}
+
+.card-flip {
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-flip.flipped {
+    transform: rotateY(180deg);
+}
+
+.card-flip-front,
+.card-flip-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: inherit;
+}
+
+.card-flip-back {
+    transform: rotateY(180deg);
+}
+
+/* ========== 14. 悬停发光边框效果 ========== */
+@keyframes glow-border {
+    0%, 100% {
+        box-shadow: 0 0 5px rgba(102, 126, 234, 0.5),
+                    0 0 10px rgba(102, 126, 234, 0.3);
+    }
+    50% {
+        box-shadow: 0 0 20px rgba(102, 126, 234, 0.8),
+                    0 0 30px rgba(102, 126, 234, 0.5);
+    }
+}
+
+.glow-border-active {
+    animation: glow-border 2s ease-in-out infinite;
+}
+
+/* ========== 15. 主题切换颜色过渡 ========== */
+body {
+    transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+.theme-transition * {
+    transition: background-color 0.3s ease,
+                color 0.3s ease,
+                border-color 0.3s ease,
+                box-shadow 0.3s ease !important;
+}
+
+/* 主题切换波纹扩散 */
+@keyframes theme-ripple {
+    0% {
+        transform: scale(0);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(50);
+        opacity: 0;
+    }
+}
+
+.theme-ripple-effect {
+    position: fixed;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    animation: theme-ripple 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ========== 16. 图标变形动画 ========== */
+.icon-morph {
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.icon-morph.rotate {
+    transform: rotate(360deg);
+}
+
+.icon-morph.scale {
+    transform: scale(1.2);
+}
+
+/* 太阳/月亮图标切换 */
+@keyframes sun-to-moon {
+    0% {
+        transform: rotate(0deg) scale(1);
+    }
+    50% {
+        transform: rotate(180deg) scale(0.8);
+    }
+    100% {
+        transform: rotate(360deg) scale(1);
+    }
+}
+
+.theme-icon-animate {
+    animation: sun-to-moon 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ========== 17. 手风琴展开效果 ========== */
+.accordion-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.3s ease,
+                padding 0.3s ease;
+    opacity: 0;
+}
+
+.accordion-content.expanded {
+    max-height: 2000px;
+    opacity: 1;
+    padding: 20px 0;
+}
+
+/* ========== 18. 公式渐现动画 ========== */
+@keyframes formula-fade-in {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.formula-animate {
+    opacity: 0;
+    animation: formula-fade-in 0.6s ease-out forwards;
+}
+
+.formula-animate:nth-child(1) { animation-delay: 0.1s; }
+.formula-animate:nth-child(2) { animation-delay: 0.2s; }
+.formula-animate:nth-child(3) { animation-delay: 0.3s; }
+.formula-animate:nth-child(4) { animation-delay: 0.4s; }
+
+/* ========== 19. 时间轴动画 ========== */
+.timeline-item {
+    opacity: 0;
+    transform: translateX(-30px);
+    animation: timeline-slide-in 0.6s ease-out forwards;
+}
+
+@keyframes timeline-slide-in {
+    0% {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.timeline-item:nth-child(1) { animation-delay: 0.1s; }
+.timeline-item:nth-child(2) { animation-delay: 0.2s; }
+.timeline-item:nth-child(3) { animation-delay: 0.3s; }
+.timeline-item:nth-child(4) { animation-delay: 0.4s; }
+.timeline-item:nth-child(5) { animation-delay: 0.5s; }
+
+/* ========== 20. 工具提示动画 ========== */
+.tooltip-animate {
+    opacity: 0;
+    transform: translateY(5px);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    pointer-events: none;
+}
+
+.tooltip-animate.show {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+/* ========== 21. 滚动视差效果 ========== */
+.parallax-bg {
+    transition: transform 0.3s ease-out;
+    will-change: transform;
+}
+
+/* ========== 22. 页面入场动画 ========== */
+@keyframes page-fade-in {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.page-animate-in {
+    animation: page-fade-in 0.6s ease-out;
+}
+
+/* ========== 23. 加载旋转Spinner ========== */
+@keyframes spinner-rotate {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.spinner {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spinner-rotate 0.8s linear infinite;
+}
+
+/* ========== 24. 滑块轨迹彩色渐变 ========== */
+.slider-gradient {
+    position: relative;
+}
+
+.slider-gradient::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background: linear-gradient(90deg, #667eea, #764ba2, #f093fb);
+    border-radius: inherit;
+    transition: width 0.3s ease;
+    pointer-events: none;
+}
+
+/* ========== 25. 复选框勾选动画 ========== */
+@keyframes checkbox-check {
+    0% {
+        stroke-dashoffset: 20;
+    }
+    100% {
+        stroke-dashoffset: 0;
+    }
+}
+
+.checkbox-checkmark {
+    stroke-dasharray: 20;
+    stroke-dashoffset: 20;
+    transition: stroke-dashoffset 0.3s ease;
+}
+
+.checkbox-checked .checkbox-checkmark {
+    animation: checkbox-check 0.3s ease forwards;
+}
+
+/* ========== 26. 代码打字机效果 ========== */
+@keyframes typing {
+    from {
+        width: 0;
+    }
+    to {
+        width: 100%;
+    }
+}
+
+.typewriter-text {
+    overflow: hidden;
+    border-right: 2px solid var(--primary);
+    white-space: nowrap;
+    animation: typing 3s steps(40, end),
+               blink-caret 0.75s step-end infinite;
+}
+
+@keyframes blink-caret {
+    from, to {
+        border-color: transparent;
+    }
+    50% {
+        border-color: var(--primary);
+    }
+}
+
+/* ========== 27. 卡片悬停放大动画 ========== */
+.card-hover-scale {
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-hover-scale:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* ========== 28. 面包屑动画 ========== */
+.breadcrumb-item {
+    opacity: 0;
+    transform: translateX(-10px);
+    animation: breadcrumb-slide 0.4s ease-out forwards;
+}
+
+@keyframes breadcrumb-slide {
+    0% {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.breadcrumb-item:nth-child(1) { animation-delay: 0.05s; }
+.breadcrumb-item:nth-child(2) { animation-delay: 0.1s; }
+.breadcrumb-item:nth-child(3) { animation-delay: 0.15s; }
+
+/* ========== 29. 进度条流动动画 ========== */
+@keyframes progress-flow {
+    0% {
+        background-position: 0% 0%;
+    }
+    100% {
+        background-position: 100% 0%;
+    }
+}
+
+.progress-bar-animated {
+    background: linear-gradient(
+        90deg,
+        var(--primary) 0%,
+        #5a7ae8 50%,
+        var(--primary) 100%
+    );
+    background-size: 200% 100%;
+    animation: progress-flow 1.5s linear infinite;
+}
+
+/* ========== 30. 微交互按钮按压效果 ========== */
+.btn-press:active {
+    transform: scale(0.95);
+    transition: transform 0.1s ease;
+}
+
+/* ========== 响应式优化 ========== */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* ========== 性能优化 ========== */
+.gpu-accelerate {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+}
+
+/* ========== 组合类 ========== */
+.animate-all {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.fade-in {
+    animation: fade-in 0.5s ease-out;
+}
+
+@keyframes fade-in {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.slide-up {
+    animation: slide-up 0.5s ease-out;
+}
+
+@keyframes slide-up {
+    0% {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* ========== 特殊科学主题动画 ========== */
+/* 分子振动效果 */
+@keyframes molecule-vibrate {
+    0%, 100% {
+        transform: translate(0, 0) rotate(0deg);
+    }
+    25% {
+        transform: translate(2px, 2px) rotate(1deg);
+    }
+    50% {
+        transform: translate(0, 4px) rotate(0deg);
+    }
+    75% {
+        transform: translate(-2px, 2px) rotate(-1deg);
+    }
+}
+
+.molecule-vibrate {
+    animation: molecule-vibrate 2s ease-in-out infinite;
+}
+
+/* 轨道运动效果 */
+@keyframes orbit {
+    0% {
+        transform: rotate(0deg) translateX(50px) rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg) translateX(50px) rotate(-360deg);
+    }
+}
+
+.orbit-animation {
+    animation: orbit 10s linear infinite;
+}

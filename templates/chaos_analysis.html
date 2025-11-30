@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-anim="tilt,ripple">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>混沌与奇异吸引子分析 - 动力学系统分析器</title>    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Lora:wght@400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <!-- Theme CSS (Load First) -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css') }}">
+
+    <!-- Horizontal Layout CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/layout-horizontal.css') }}">
+
+    <!-- Base Styles -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/animations.css') }}">
+    <!-- Help & Tour CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/help.css') }}">
+    <link rel="stylesheet" href="https://unpkg.com/intro.js/minified/introjs.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/themes/light.css">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+        <!-- Horizontal Layout Container -->
+    <div class="layout-horizontal">
+
+        <!-- Top Navigation Bar -->
+        <nav class="top-navigation">
+            <div class="top-nav-left">
+                <button class="sidebar-toggle-btn" aria-label="切换侧边栏">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="app-logo">
+                    <i class="fas fa-atom"></i>
+                    <span>动力学分析器</span>
+                </div>
+                <div class="top-nav-tabs">
+                    <a href="{{ url_for('index') }}" class="top-nav-tab">
+                        <i class="fas fa-home"></i> 首页
+                    </a>
+                    <a href="{{ url_for('text_generator') }}" class="top-nav-tab">
+                        <i class="fas fa-magic"></i> 智能生成
+                    </a>
+                    <a href="{{ url_for('nonlinear_analysis') }}" class="top-nav-tab">
+                        <i class="fas fa-wave-square"></i> 非线性
+                    </a>
+                    <a href="{{ url_for('chaos_analysis') }}" class="top-nav-tab active">
+                        <i class="fas fa-circle-notch"></i> 混沌分析
+                    </a>
+                    <a href="{{ url_for('discrete_analysis') }}" class="top-nav-tab">
+                        <i class="fas fa-project-diagram"></i> 离散系统
+                    </a>
+                </div>
+            </div>
+            <div class="top-nav-right">
+                <button class="top-nav-action" data-theme-toggle aria-label="切换主题">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button class="top-nav-action" aria-label="通知">
+                    <i class="fas fa-bell"></i>
+                </button>
+                <button class="top-nav-action" aria-label="设置">
+                    <i class="fas fa-cog"></i>
+                </button>
+                <button class="hamburger-menu" aria-label="菜单">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Collapsible Sidebar -->
+        <aside class="collapsible-sidebar">
+            <nav class="sidebar-nav">
+                <div class="sidebar-nav-group">
+                    <div class="sidebar-nav-label">快速操作</div>
+                    <a href="{{ url_for('index') }}" class="sidebar-nav-item" data-tooltip="主页">
+                        <i class="fas fa-home"></i>
+                        <span>主页</span>
+                    </a>
+                    <a href="{{ url_for('text_generator') }}" class="sidebar-nav-item" data-tooltip="智能生成">
+                        <i class="fas fa-magic"></i>
+                        <span>智能生成</span>
+                    </a>
+                </div>
+                <div class="sidebar-nav-group">
+                    <div class="sidebar-nav-label">系统分析</div>
+                    <a href="{{ url_for('phase_portrait') }}" class="sidebar-nav-item" data-tooltip="线性系统">
+                        <i class="fas fa-chart-line"></i>
+                        <span>线性系统</span>
+                    </a>
+                    <a href="{{ url_for('nonlinear_analysis') }}" class="sidebar-nav-item" data-tooltip="非线性系统">
+                        <i class="fas fa-wave-square"></i>
+                        <span>非线性系统</span>
+                    </a>
+                    <a href="{{ url_for('trajectory') }}" class="sidebar-nav-item" data-tooltip="轨迹分析">
+                        <i class="fas fa-route"></i>
+                        <span>轨迹分析</span>
+                    </a>
+                    <a href="{{ url_for('enhanced_phase_portrait') }}" class="sidebar-nav-item" data-tooltip="增强相图">
+                        <i class="fas fa-expand-arrows-alt"></i>
+                        <span>增强相图</span>
+                    </a>
+                </div>
+                <div class="sidebar-nav-group">
+                    <div class="sidebar-nav-label">高级功能</div>
+                    <a href="{{ url_for('chaos_analysis') }}" class="sidebar-nav-item active" data-tooltip="混沌分析">
+                        <i class="fas fa-circle-notch"></i>
+                        <span>混沌分析</span>
+                    </a>
+                    <a href="{{ url_for('discrete_analysis') }}" class="sidebar-nav-item" data-tooltip="离散系统">
+                        <i class="fas fa-project-diagram"></i>
+                        <span>离散系统</span>
+                    </a>
+                    <a href="{{ url_for('discrete_applications') }}" class="sidebar-nav-item" data-tooltip="实际应用">
+                        <i class="fas fa-flask"></i>
+                        <span>实际应用</span>
+                    </a>
+                </div>
+                <div class="sidebar-nav-group">
+                    <div class="sidebar-nav-label">文档</div>
+                    <a href="#" class="sidebar-nav-item" data-tooltip="数据库">
+                        <i class="fas fa-database"></i>
+                        <span>数据库</span>
+                    </a>
+                    <a href="#" class="sidebar-nav-item" data-tooltip="报告">
+                        <i class="fas fa-file-alt"></i>
+                        <span>报告</span>
+                    </a>
+                    <a href="#" class="sidebar-nav-item" data-tooltip="帮助">
+                        <i class="fas fa-question-circle"></i>
+                        <span>帮助</span>
+                    </a>
+                </div>
+            </nav>
+            <div class="sidebar-user">
+                <div class="sidebar-user-avatar">CN</div>
+                <div class="sidebar-user-info">
+                    <div class="sidebar-user-name">shadcn</div>
+                    <div class="sidebar-user-email">m@example.com</div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content-horizontal">
+            <!-- Attractor Selection Panel -->
+            <div class="chaos-controls-section">
+                <div class="attractor-selection">
+                    <h2><i class="fas fa-atom"></i> 奇异吸引子选择</h2>
+                    
+                    <div class="attractor-gallery">
+                        <div class="attractor-card active" data-attractor="lorenz">
+                            <div class="attractor-preview">
+                                <i class="fas fa-hurricane"></i>
+                            </div>
+                            <h3>洛伦兹吸引子</h3>
+                            <p>经典的混沌系统，蝴蝶效应的典型例子</p>
+                            <div class="attractor-equations">
+                                <div>dx/dt = σ(y - x)</div>
+                                <div>dy/dt = x(ρ - z) - y</div>
+                                <div>dz/dt = xy - βz</div>
+                            </div>
+                        </div>
+
+                        <div class="attractor-card" data-attractor="rossler">
+                            <div class="attractor-preview">
+                                <i class="fas fa-spiral"></i>
+                            </div>
+                            <h3>Rössler吸引子</h3>
+                            <p>具有简单结构的混沌吸引子</p>
+                            <div class="attractor-equations">
+                                <div>dx/dt = -y - z</div>
+                                <div>dy/dt = x + ay</div>
+                                <div>dz/dt = b + z(x - c)</div>
+                            </div>
+                        </div>
+
+                        <div class="attractor-card" data-attractor="chua">
+                            <div class="attractor-preview">
+                                <i class="fas fa-bolt"></i>
+                            </div>
+                            <h3>蔡氏电路</h3>
+                            <p>电子电路中的混沌现象</p>
+                            <div class="attractor-equations">
+                                <div>dx/dt = α(y - x - f(x))</div>
+                                <div>dy/dt = x - y + z</div>
+                                <div>dz/dt = -βy</div>
+                            </div>
+                        </div>
+
+                        <div class="attractor-card" data-attractor="thomas">
+                            <div class="attractor-preview">
+                                <i class="fas fa-atom"></i>
+                            </div>
+                            <h3>Thomas吸引子</h3>
+                            <p>保守系统中的奇异吸引子</p>
+                            <div class="attractor-equations">
+                                <div>dx/dt = sin(y) - bx</div>
+                                <div>dy/dt = sin(z) - by</div>
+                                <div>dz/dt = sin(x) - bz</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Parameter Controls -->
+                <div class="parameter-controls">
+                    <h3><i class="fas fa-sliders-h"></i> 参数控制</h3>
+                    <div id="parameterSliders" class="parameter-sliders">
+                        <!-- Dynamic parameter sliders will be inserted here -->
+                    </div>
+                    
+                    <div class="simulation-controls">
+                        <div class="control-group">
+                            <label>积分步长: <span id="dtValue">0.01</span></label>
+                            <input type="range" id="dtSlider" min="0.001" max="0.1" step="0.001" value="0.01" class="param-slider">
+                        </div>
+                        <div class="control-group">
+                            <label>积分时间: <span id="timeValue">50</span></label>
+                            <input type="range" id="timeSlider" min="10" max="200" step="10" value="50" class="param-slider">
+                        </div>
+                        <div class="control-group">
+                            <label>轨迹数量: <span id="trajCountValue">1</span></label>
+                            <input type="range" id="trajCountSlider" min="1" max="10" step="1" value="1" class="param-slider">
+                        </div>
+                    </div>
+
+                    <div class="action-controls">
+                        <button id="generateAttractor" class="generate-btn-chaos">
+                            <i class="fas fa-play"></i> 生成吸引子
+                        </button>
+                        <button id="animateTrajectory" class="animate-btn">
+                            <i class="fas fa-film"></i> 动画演示
+                        </button>
+                        <button id="resetView" class="reset-btn">
+                            <i class="fas fa-undo"></i> 重置视角
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Visualization Area -->
+            <div class="chaos-visualization">
+                <div class="main-viz-panel">
+                    <!-- 3D Attractor Visualization -->
+                    <div class="attractor-3d-panel">
+                        <h3><i class="fas fa-cube"></i> 3D奇异吸引子可视化</h3>
+                        <div id="attractor3D" class="attractor-3d-container"></div>
+                        
+                        <div class="view-controls">
+                            <button id="viewXY" class="view-btn">XY平面</button>
+                            <button id="viewXZ" class="view-btn">XZ平面</button>
+                            <button id="viewYZ" class="view-btn">YZ平面</button>
+                            <button id="view3D" class="view-btn active">3D视图</button>
+                        </div>
+                    </div>
+
+                    <!-- Poincaré Map -->
+                    <div class="poincare-panel">
+                        <h3><i class="fas fa-crosshairs"></i> 庞加莱截面</h3>
+                        <div id="poincareMap" class="poincare-container"></div>
+
+                        <div class="poincare-controls">
+                            <label>
+                                截面平面:
+                                <select id="poincareSection">
+                                    <option value="z">z = 常数</option>
+                                    <option value="y">y = 常数</option>
+                                    <option value="x">x = 常数</option>
+                                </select>
+                            </label>
+                            <label>
+                                截面值: <span id="sectionValue">27</span>
+                                <input type="range" id="sectionSlider" min="0" max="50" step="0.5" value="27" class="section-slider">
+                            </label>
+                            <div class="poincare-button-group">
+                                <button id="precisePoincare" class="btn-precise" title="使用后端精确积分计算">
+                                    <i class="fas fa-calculator"></i> 精确计算
+                                </button>
+                                <span id="poincareStatus" class="poincare-status"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Analysis Sidebar -->
+                <div class="chaos-analysis-sidebar">
+                    <!-- Lyapunov Exponents -->
+                    <div class="lyapunov-panel">
+                        <h4><i class="fas fa-chart-line"></i> 李雅普诺夫指数</h4>
+                        <div id="lyapunovDisplay" class="lyapunov-display">
+                            <div class="lyapunov-item">
+                                <span class="lyapunov-label">λ₁:</span>
+                                <span class="lyapunov-value" id="lambda1">计算中...</span>
+                            </div>
+                            <div class="lyapunov-item">
+                                <span class="lyapunov-label">λ₂:</span>
+                                <span class="lyapunov-value" id="lambda2">计算中...</span>
+                            </div>
+                            <div class="lyapunov-item">
+                                <span class="lyapunov-label">λ₃:</span>
+                                <span class="lyapunov-value" id="lambda3">计算中...</span>
+                            </div>
+                            <div class="lyapunov-sum">
+                                <span class="lyapunov-label">Σλᵢ:</span>
+                                <span class="lyapunov-value" id="lambdaSum">计算中...</span>
+                            </div>
+                        </div>
+                        <button id="calculateLyapunov" class="calculate-btn">
+                            <i class="fas fa-calculator"></i> 计算指数
+                        </button>
+                    </div>
+
+                    <!-- Fractal Dimension -->
+                    <div class="fractal-panel">
+                        <h4><i class="fas fa-snowflake"></i> 分形维数</h4>
+                        <div id="fractalDisplay" class="fractal-display">
+                            <div class="fractal-item">
+                                <span class="fractal-label">盒计数维数:</span>
+                                <span class="fractal-value" id="boxDimension">计算中...</span>
+                            </div>
+                            <div class="fractal-item">
+                                <span class="fractal-label">关联维数:</span>
+                                <span class="fractal-value" id="correlationDimension">计算中...</span>
+                            </div>
+                        </div>
+                        <button id="calculateFractal" class="calculate-btn">
+                            <i class="fas fa-calculator"></i> 计算维数
+                        </button>
+                    </div>
+
+                    <!-- Chaos Indicators -->
+                    <div class="chaos-indicators">
+                        <h4><i class="fas fa-tachometer-alt"></i> 混沌指标</h4>
+                        <div class="indicator-grid">
+                            <div class="indicator-item">
+                                <div class="indicator-icon chaos" id="chaosIndicator">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                </div>
+                                <span class="indicator-label">混沌性</span>
+                            </div>
+                            <div class="indicator-item">
+                                <div class="indicator-icon periodic" id="periodicIndicator">
+                                    <i class="fas fa-sync-alt"></i>
+                                </div>
+                                <span class="indicator-label">周期性</span>
+                            </div>
+                            <div class="indicator-item">
+                                <div class="indicator-icon strange" id="strangeIndicator">
+                                    <i class="fas fa-atom"></i>
+                                </div>
+                                <span class="indicator-label">奇异性</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Export Options -->
+                    <div class="export-chaos">
+                        <h4><i class="fas fa-download"></i> 导出选项</h4>
+                        <div class="export-buttons-chaos">
+                            <button id="export3D" class="export-btn-chaos">
+                                <i class="fas fa-cube"></i> 3D模型
+                            </button>
+                            <button id="exportAnimation" class="export-btn-chaos">
+                                <i class="fas fa-film"></i> 动画GIF
+                            </button>
+                            <button id="exportData" class="export-btn-chaos">
+                                <i class="fas fa-table"></i> 数据CSV
+                            </button>
+                            <button id="exportReport" class="export-btn-chaos">
+                                <i class="fas fa-file-pdf"></i> 分析报告
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Educational Content -->
+            <div class="chaos-education">
+                <div class="education-tabs">
+                    <button class="edu-tab active" data-tab="theory">
+                        <i class="fas fa-book"></i> 理论基础
+                    </button>
+                    <button class="edu-tab" data-tab="applications">
+                        <i class="fas fa-cogs"></i> 实际应用
+                    </button>
+                    <button class="edu-tab" data-tab="history">
+                        <i class="fas fa-history"></i> 历史发展
+                    </button>
+                </div>
+
+                <div class="education-content">
+                    <div class="edu-panel active" id="theory-panel">
+                        <h3>混沌理论基础</h3>
+                        <div class="theory-grid">
+                            <div class="theory-card">
+                                <h4><i class="fas fa-butterfly"></i> 蝴蝶效应</h4>
+                                <p>初始条件的微小变化可能导致系统长期行为的巨大差异。这是混沌系统对初始条件敏感依赖性的体现。</p>
+                            </div>
+                            <div class="theory-card">
+                                <h4><i class="fas fa-atom"></i> 奇异吸引子</h4>
+                                <p>具有分形结构的吸引子，轨迹在其上表现出混沌行为。维数通常是非整数。</p>
+                            </div>
+                            <div class="theory-card">
+                                <h4><i class="fas fa-chart-line"></i> 李雅普诺夫指数</h4>
+                                <p>量化轨迹发散速度的指标。正的李雅普诺夫指数表明系统具有混沌性质。</p>
+                            </div>
+                            <div class="theory-card">
+                                <h4><i class="fas fa-crosshairs"></i> 庞加莱截面</h4>
+                                <p>通过在相空间中设置截面来研究连续系统的离散映射性质。</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="edu-panel" id="applications-panel">
+                        <h3>混沌理论的实际应用</h3>
+                        <div class="applications-grid">
+                            <div class="app-card">
+                                <h4><i class="fas fa-cloud-rain"></i> 气象学</h4>
+                                <p>天气预报的局限性源于大气系统的混沌性质。洛伦兹最初研究天气模型时发现了混沌现象。</p>
+                            </div>
+                            <div class="app-card">
+                                <h4><i class="fas fa-heartbeat"></i> 生物医学</h4>
+                                <p>心律不齐、脑电波分析、生态系统动态等都涉及混沌理论的应用。</p>
+                            </div>
+                            <div class="app-card">
+                                <h4><i class="fas fa-chart-candlestick"></i> 金融市场</h4>
+                                <p>股票价格、汇率波动等金融时间序列常表现出混沌特征。</p>
+                            </div>
+                            <div class="app-card">
+                                <h4><i class="fas fa-microchip"></i> 工程技术</h4>
+                                <p>电路设计、机械振动、激光器等工程系统中的混沌控制与利用。</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="edu-panel" id="history-panel">
+                        <h3>混沌理论发展历程</h3>
+                        <div class="timeline">
+                            <div class="timeline-item">
+                                <div class="timeline-year">1963</div>
+                                <div class="timeline-content">
+                                    <h4>洛伦兹发现</h4>
+                                    <p>Edward Lorenz在研究天气模型时发现了对初始条件的敏感依赖性，标志着现代混沌理论的诞生。</p>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-year">1975</div>
+                                <div class="timeline-content">
+                                    <h4>李天岩-约克定理</h4>
+                                    <p>Li和Yorke证明了"周期三蕴含混沌"的著名定理，首次在数学上严格定义了混沌。</p>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-year">1976</div>
+                                <div class="timeline-content">
+                                    <h4>Rössler吸引子</h4>
+                                    <p>Otto Rössler提出了结构相对简单但具有混沌性质的三维连续系统。</p>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-year">1983</div>
+                                <div class="timeline-content">
+                                    <h4>蔡氏电路</h4>
+                                    <p>Leon Chua设计了第一个能够产生混沌的简单电子电路，使混沌现象可以在实验室中观察。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Loading Overlay -->
+        <div class="loading-overlay" id="loadingOverlay">
+            <div class="loading-spinner">
+                <div class="chaos-loader">
+                    <div class="chaos-orbit"></div>
+                    <div class="chaos-orbit"></div>
+                    <div class="chaos-orbit"></div>
+                </div>
+                <p>生成奇异吸引子中...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Help & Tour Libraries -->
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://unpkg.com/tippy.js@6"></script>
+    <script src="https://unpkg.com/intro.js/minified/intro.min.js"></script>
+    <!-- Help System -->
+    <script src="{{ url_for('static', filename='js/help_system.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/chaos_analysis.js') }}"></script>
+
+    <!-- Scripts -->
+    <script src="{{ url_for('static', filename='js/theme-toggle.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/layout-horizontal.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/particles.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/animation-core.js') }}" defer></script>
+</body>
+</html>

@@ -1,0 +1,510 @@
+/* ==========================================================================
+   Horizontal Layout System - Toggleable Sidebar + Top Navigation
+   ========================================================================== */
+
+/* Layout Container */
+.layout-horizontal {
+    display: grid;
+    grid-template-areas:
+        "topnav topnav"
+        "sidebar main";
+    grid-template-columns: 70px 1fr;
+    grid-template-rows: 60px 1fr;
+    min-height: 100vh;
+    transition: grid-template-columns 0.3s ease;
+}
+
+.layout-horizontal.sidebar-expanded {
+    grid-template-columns: 240px 1fr;
+}
+
+/* ==========================================================================
+   Top Navigation Bar
+   ========================================================================== */
+.top-navigation {
+    grid-area: topnav;
+    background: var(--card);
+    border-bottom: 2px solid var(--border);
+    box-shadow: var(--shadow-x) var(--shadow-y) var(--shadow-blur) var(--shadow-color);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    gap: 30px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+/* Top Nav - Left Section */
+.top-nav-left {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.sidebar-toggle-btn {
+    width: 40px;
+    height: 40px;
+    border: 2px solid var(--border);
+    background: var(--background);
+    border-radius: var(--radius);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    color: var(--foreground);
+    font-size: 1.2rem;
+}
+
+.sidebar-toggle-btn:hover {
+    background: var(--primary);
+    color: var(--primary-foreground);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-x) var(--shadow-y) var(--shadow-blur) var(--shadow-color);
+}
+
+.app-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: var(--foreground);
+}
+
+.app-logo i {
+    color: var(--primary);
+    font-size: 1.5rem;
+}
+
+/* Top Nav Tabs */
+.top-nav-tabs {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    flex: 1;
+}
+
+.top-nav-tab {
+    padding: 10px 20px;
+    border: 2px solid transparent;
+    background: transparent;
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-weight: 500;
+    color: var(--muted-foreground);
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.top-nav-tab:hover {
+    background: var(--muted);
+    color: var(--foreground);
+}
+
+.top-nav-tab.active {
+    background: var(--primary);
+    color: var(--primary-foreground);
+    border-color: var(--border);
+    box-shadow: var(--shadow-x) var(--shadow-y) var(--shadow-blur) var(--shadow-color);
+}
+
+/* Top Nav - Right Section */
+.top-nav-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.top-nav-action {
+    width: 40px;
+    height: 40px;
+    border: 2px solid var(--border);
+    background: var(--background);
+    border-radius: var(--radius);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    color: var(--foreground);
+}
+
+.top-nav-action:hover {
+    background: var(--muted);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-x) var(--shadow-y) var(--shadow-blur) var(--shadow-color);
+}
+
+/* ==========================================================================
+   Collapsible Sidebar
+   ========================================================================== */
+.collapsible-sidebar {
+    grid-area: sidebar;
+    background: var(--card);
+    border-right: 2px solid var(--border);
+    box-shadow: var(--shadow-x) var(--shadow-y) var(--shadow-blur) var(--shadow-color);
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+    overflow-y: auto;
+    transition: all 0.3s ease;
+    position: relative;
+    width: 100%;
+}
+
+/* Sidebar Navigation */
+.sidebar-nav {
+    flex: 1;
+    padding: 10px 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-nav-group {
+    margin-bottom: 20px;
+}
+
+.collapsible-sidebar:not(.sidebar-expanded) .sidebar-nav-group {
+    margin-bottom: 10px;
+}
+
+.sidebar-nav-label {
+    padding: 10px 15px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--muted-foreground);
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: opacity 0.3s ease, max-height 0.3s ease;
+}
+
+.layout-horizontal.sidebar-expanded .sidebar-nav-label {
+    opacity: 1 !important;
+    max-height: 50px !important;
+}
+
+.sidebar-nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 15px;
+    color: var(--foreground);
+    text-decoration: none;
+    transition: all 0.2s ease;
+    border-left: 3px solid transparent;
+    position: relative;
+    min-height: 48px;
+}
+
+.collapsible-sidebar:not(.sidebar-expanded) .sidebar-nav-item {
+    padding: 14px 0;
+    justify-content: center;
+    gap: 0;
+}
+
+.layout-horizontal.sidebar-expanded .sidebar-nav-item {
+    gap: 12px !important;
+    justify-content: flex-start !important;
+}
+
+.sidebar-nav-item:hover {
+    background: var(--muted);
+    border-left-color: var(--primary);
+}
+
+.sidebar-nav-item.active {
+    background: var(--primary);
+    color: var(--primary-foreground);
+    border-left-color: var(--border);
+    box-shadow: inset var(--shadow-x) var(--shadow-y) var(--shadow-blur) var(--shadow-color);
+}
+
+.collapsible-sidebar:not(.sidebar-expanded) .sidebar-nav-item.active {
+    border-left: none;
+    border-radius: 8px;
+    margin: 4px;
+}
+
+.sidebar-nav-item i {
+    font-size: 1.25rem;
+    width: 24px;
+    text-align: center;
+    flex-shrink: 0;
+    display: inline-block;
+    opacity: 1;
+    visibility: visible;
+}
+
+.collapsible-sidebar:not(.sidebar-expanded) .sidebar-nav-item i {
+    font-size: 1.5rem;
+    width: 100%;
+    opacity: 1;
+    visibility: visible;
+}
+
+.layout-horizontal.sidebar-expanded .sidebar-nav-item i {
+    font-size: 1.25rem !important;
+    width: 24px !important;
+}
+
+.sidebar-nav-item span {
+    white-space: nowrap;
+    opacity: 0;
+    width: 0;
+    overflow: hidden;
+    transition: opacity 0.3s ease, width 0.3s ease;
+    display: inline-block;
+}
+
+.layout-horizontal.sidebar-expanded .sidebar-nav-item span {
+    opacity: 1 !important;
+    width: auto !important;
+    display: inline-block !important;
+}
+
+/* Tooltip for collapsed state */
+.sidebar-nav-item::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    left: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--foreground);
+    color: var(--background);
+    padding: 5px 10px;
+    border-radius: var(--radius);
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    margin-left: 10px;
+    font-size: 0.875rem;
+    transition: opacity 0.2s ease;
+    z-index: 1000;
+}
+
+.collapsible-sidebar:not(.sidebar-expanded) .sidebar-nav-item:hover::after {
+    opacity: 1;
+}
+
+/* Sidebar User Profile */
+.sidebar-user {
+    padding: 15px;
+    border-top: 2px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.3s ease;
+    justify-content: center;
+}
+
+.layout-horizontal.sidebar-expanded .sidebar-user {
+    justify-content: flex-start !important;
+    gap: 12px !important;
+}
+
+.collapsible-sidebar:not(.sidebar-expanded) .sidebar-user {
+    padding: 15px 0;
+}
+
+.sidebar-user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--primary);
+    color: var(--primary-foreground);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    flex-shrink: 0;
+    border: 2px solid var(--border);
+}
+
+.collapsible-sidebar:not(.sidebar-expanded) .sidebar-user-avatar {
+    width: 44px;
+    height: 44px;
+    font-size: 1.1rem;
+}
+
+.sidebar-user-info {
+    opacity: 0;
+    max-width: 0;
+    transition: opacity 0.3s ease, max-width 0.3s ease;
+    flex: 1;
+    overflow: hidden;
+}
+
+.layout-horizontal.sidebar-expanded .sidebar-user-info {
+    opacity: 1 !important;
+    max-width: 200px !important;
+}
+
+.sidebar-user-name {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--foreground);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.sidebar-user-email {
+    font-size: 0.75rem;
+    color: var(--muted-foreground);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* ==========================================================================
+   Main Content Area
+   ========================================================================== */
+.main-content-horizontal {
+    grid-area: main;
+    padding: 30px;
+    background: var(--background);
+    overflow-y: auto;
+}
+
+/* ==========================================================================
+   Responsive Design
+   ========================================================================== */
+@media (max-width: 768px) {
+    /* Mobile: Hide top nav tabs, show hamburger */
+    .top-nav-tabs {
+        display: none;
+    }
+
+    .hamburger-menu {
+        display: flex !important;
+    }
+
+    /* Sidebar becomes overlay */
+    .collapsible-sidebar {
+        position: fixed;
+        left: 0;
+        top: 60px;
+        bottom: 0;
+        z-index: 200;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+    }
+
+    .sidebar-expanded .collapsible-sidebar {
+        transform: translateX(0);
+    }
+
+    /* Overlay backdrop */
+    .sidebar-backdrop {
+        display: none;
+        position: fixed;
+        top: 60px;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 199;
+    }
+
+    .sidebar-expanded .sidebar-backdrop {
+        display: block;
+    }
+
+    /* Adjust main content grid */
+    .layout-horizontal {
+        grid-template-columns: 0 1fr;
+    }
+
+    .layout-horizontal.sidebar-expanded {
+        grid-template-columns: 240px 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .top-navigation {
+        padding: 0 10px;
+        gap: 10px;
+    }
+
+    .app-logo span {
+        display: none;
+    }
+
+    .main-content-horizontal {
+        padding: 15px;
+    }
+}
+
+/* ==========================================================================
+   Hamburger Menu Icon (Mobile)
+   ========================================================================== */
+.hamburger-menu {
+    display: none;
+    width: 40px;
+    height: 40px;
+    border: 2px solid var(--border);
+    background: var(--background);
+    border-radius: var(--radius);
+    cursor: pointer;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    transition: all 0.2s ease;
+}
+
+.hamburger-menu span {
+    width: 20px;
+    height: 2px;
+    background: var(--foreground);
+    transition: all 0.3s ease;
+}
+
+.hamburger-menu:hover {
+    background: var(--muted);
+}
+
+.hamburger-menu.active span:nth-child(1) {
+    transform: rotate(45deg) translateY(6px);
+}
+
+.hamburger-menu.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger-menu.active span:nth-child(3) {
+    transform: rotate(-45deg) translateY(-6px);
+}
+
+/* ==========================================================================
+   Scrollbar Styling
+   ========================================================================== */
+.sidebar-nav::-webkit-scrollbar,
+.main-content-horizontal::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sidebar-nav::-webkit-scrollbar-track,
+.main-content-horizontal::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.sidebar-nav::-webkit-scrollbar-thumb,
+.main-content-horizontal::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 3px;
+}
+
+.sidebar-nav::-webkit-scrollbar-thumb:hover,
+.main-content-horizontal::-webkit-scrollbar-thumb:hover {
+    background: var(--primary);
+}

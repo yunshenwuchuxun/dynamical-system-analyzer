@@ -1,0 +1,404 @@
+/* ========================================
+   相图分析页面 - 专业左右布局
+   ======================================== */
+
+/* 页面整体容器 */
+.phase-portrait-page {
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+/* 标题区域 - 宽、居中、美观 */
+.phase-portrait-page .header {
+    text-align: center;
+    background: linear-gradient(135deg, var(--card), var(--muted));
+    border-radius: 12px;
+    padding: 20px 30px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    border: 1px solid var(--border);
+}
+
+.phase-portrait-page .header h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+    background: linear-gradient(135deg, var(--primary), #5a7ae8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.phase-portrait-page .header p {
+    font-size: 0.95rem;
+    color: var(--muted-foreground);
+    margin: 0;
+}
+
+/* 主内容区 - 左右布局 */
+.phase-portrait-page .portrait-main-layout {
+    display: grid;
+    grid-template-columns: 380px 1fr;
+    gap: 16px;
+    height: calc(100vh - 200px);
+    min-height: 600px;
+}
+
+/* 左侧控制面板 */
+.phase-portrait-page .left-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    overflow-y: auto;
+    padding-right: 8px;
+}
+
+/* 卡片通用样式 */
+.phase-portrait-page .control-card {
+    background: var(--card);
+    padding: 18px 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--border);
+}
+
+.phase-portrait-page .control-card h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: var(--foreground);
+    border-bottom: 2px solid var(--primary);
+    padding-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.phase-portrait-page .control-card h3 i {
+    color: var(--primary);
+}
+
+/* 矩阵输入卡片 */
+.phase-portrait-page .matrix-display-compact {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin: 12px 0;
+}
+
+.phase-portrait-page .bracket-left,
+.phase-portrait-page .bracket-right {
+    font-size: 2.5rem;
+    font-weight: 300;
+    color: var(--primary);
+}
+
+.phase-portrait-page .matrix-grid-compact {
+    display: grid;
+    grid-template-columns: repeat(2, 60px);
+    gap: 6px;
+}
+
+.phase-portrait-page .matrix-input-small {
+    width: 60px;
+    height: 45px;
+    text-align: center;
+    border: 2px solid var(--border);
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    background: var(--background);
+    color: var(--foreground);
+    transition: all 0.2s ease;
+}
+
+.phase-portrait-page .matrix-input-small:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.phase-portrait-page .generate-btn {
+    background: linear-gradient(135deg, var(--primary), #5a7ae8);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 8px;
+    box-shadow: 0 3px 10px rgba(102, 126, 234, 0.3);
+}
+
+.phase-portrait-page .generate-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+/* 参数控制卡片 */
+.phase-portrait-page .parameter-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.phase-portrait-page .parameter-grid label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+    color: var(--foreground);
+    flex-wrap: wrap;
+}
+
+.phase-portrait-page .param-input {
+    width: 60px;
+    padding: 5px 8px;
+    border: 2px solid var(--border);
+    border-radius: 5px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 0.9rem;
+    background: var(--background);
+    color: var(--foreground);
+    transition: all 0.2s ease;
+}
+
+.phase-portrait-page .param-input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.phase-portrait-page .slider {
+    flex: 1;
+    min-width: 80px;
+    height: 5px;
+    border-radius: 3px;
+    outline: none;
+    background: var(--muted);
+    cursor: pointer;
+}
+
+.phase-portrait-page .slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--primary);
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(102, 126, 234, 0.4);
+    transition: all 0.2s ease;
+}
+
+.phase-portrait-page .slider::-webkit-slider-thumb:hover {
+    transform: scale(1.15);
+}
+
+/* 信息显示卡片 */
+.phase-portrait-page .info-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.phase-portrait-page .info-item {
+    padding: 10px 14px;
+    background: var(--muted);
+    border-radius: 6px;
+    border-left: 3px solid var(--primary);
+}
+
+.phase-portrait-page .info-item strong {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--muted-foreground);
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.phase-portrait-page .info-item span {
+    display: block;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--primary);
+    line-height: 1.4;
+}
+
+/* 右侧相图显示区 */
+.phase-portrait-page .right-panel {
+    display: flex;
+    flex-direction: column;
+}
+
+.phase-portrait-page .portrait-container {
+    background: linear-gradient(135deg, #F8F9FA, #ECEFF1);
+    border-radius: 10px;
+    padding: 20px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    border: 1px solid #E0E0E0;
+    overflow: hidden;
+    position: relative;
+}
+
+.phase-portrait-page .portrait-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background:
+        linear-gradient(90deg, rgba(102, 126, 234, 0.04) 1px, transparent 1px),
+        linear-gradient(rgba(102, 126, 234, 0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    opacity: 0.4;
+}
+
+.phase-portrait-page .portrait-container img {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    border-radius: 6px;
+    object-fit: contain;
+    position: relative;
+    z-index: 1;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+.phase-portrait-page .placeholder {
+    color: rgba(0, 0, 0, 0.4);
+    text-align: center;
+    font-size: 1rem;
+    z-index: 1;
+}
+
+.phase-portrait-page .placeholder i {
+    font-size: 3.5rem;
+    margin-bottom: 12px;
+    opacity: 0.3;
+    color: rgba(0, 0, 0, 0.25);
+}
+
+/* 加载动画 */
+.phase-portrait-page .loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    backdrop-filter: blur(4px);
+}
+
+.phase-portrait-page .loading-spinner {
+    text-align: center;
+    color: white;
+    background: rgba(0, 0, 0, 0.8);
+    padding: 24px 32px;
+    border-radius: 10px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+.phase-portrait-page .loading-spinner i {
+    font-size: 2.5rem;
+    margin-bottom: 12px;
+    color: var(--primary);
+}
+
+.phase-portrait-page .loading-spinner p {
+    font-size: 1rem;
+    margin: 0;
+}
+
+/* 滚动条美化 */
+.phase-portrait-page .left-panel::-webkit-scrollbar {
+    width: 6px;
+}
+
+.phase-portrait-page .left-panel::-webkit-scrollbar-track {
+    background: var(--muted);
+    border-radius: 3px;
+}
+
+.phase-portrait-page .left-panel::-webkit-scrollbar-thumb {
+    background: var(--primary);
+    border-radius: 3px;
+}
+
+.phase-portrait-page .left-panel::-webkit-scrollbar-thumb:hover {
+    background: #5a7ae8;
+}
+
+/* 响应式设计 */
+@media (max-width: 1200px) {
+    .phase-portrait-page .portrait-main-layout {
+        grid-template-columns: 350px 1fr;
+    }
+}
+
+@media (max-width: 968px) {
+    .phase-portrait-page .portrait-main-layout {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr;
+        height: auto;
+        min-height: auto;
+    }
+
+    .phase-portrait-page .left-panel {
+        max-height: none;
+        overflow-y: visible;
+        padding-right: 0;
+    }
+
+    .phase-portrait-page .right-panel {
+        min-height: 500px;
+    }
+
+    .phase-portrait-page .header h1 {
+        font-size: 1.6rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .phase-portrait-page .header {
+        padding: 16px 20px;
+    }
+
+    .phase-portrait-page .header h1 {
+        font-size: 1.4rem;
+    }
+
+    .phase-portrait-page .portrait-main-layout {
+        gap: 12px;
+    }
+
+    .phase-portrait-page .control-card {
+        padding: 14px 16px;
+    }
+
+    .phase-portrait-page .right-panel {
+        min-height: 400px;
+    }
+}

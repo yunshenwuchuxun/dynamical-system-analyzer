@@ -1,0 +1,694 @@
+/* ========== 离散系统页面强制覆盖样式 ========== */
+
+body {
+    background: #0f0f23 !important;
+    color: #e0e0e0 !important;
+    font-family: 'Roboto', sans-serif !important;
+}
+
+.container {
+    background: transparent !important;
+}
+
+/* 头部样式 */
+.header {
+    background: rgba(255, 255, 255, 0.1) !important;
+    backdrop-filter: blur(10px) !important;
+    border-radius: 20px !important;
+    padding: 30px !important;
+    margin-bottom: 30px !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+.header h1 {
+    color: #64ffda !important;
+    text-align: center !important;
+    font-size: 2.5rem !important;
+}
+
+.header p {
+    color: #b0bec5 !important;
+    text-align: center !important;
+    font-size: 1.2rem !important;
+}
+
+/* 导航栏样式 */
+.navigation {
+    display: flex !important;
+    gap: 15px !important;
+    margin-bottom: 30px !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+    padding: 15px !important;
+    border-radius: 20px !important;
+    flex-wrap: wrap !important;
+}
+
+.nav-btn {
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: #e0e0e0 !important;
+    text-decoration: none !important;
+    padding: 12px 20px !important;
+    border-radius: 10px !important;
+    transition: all 0.3s ease !important;
+}
+
+.nav-btn:hover {
+    background: rgba(100, 255, 218, 0.2) !important;
+    color: #64ffda !important;
+}
+
+.nav-btn.active {
+    background: linear-gradient(135deg, #667eea, #764ba2) !important;
+    color: #ffffff !important;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.5) !important;
+}
+
+/* 主内容区域美化 */
+.main-content {
+    background: transparent !important;
+}
+
+/* 系统类型切换标签 */
+.system-type-tabs {
+    display: flex !important;
+    gap: 15px !important;
+    margin-bottom: 30px !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+    padding: 8px !important;
+    border-radius: 15px !important;
+    backdrop-filter: blur(10px) !important;
+}
+
+.type-tab {
+    flex: 1 !important;
+    background: transparent !important;
+    border: none !important;
+    color: #b0bec5 !important;
+    padding: 20px 25px !important;
+    border-radius: 12px !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 8px !important;
+    text-align: center !important;
+}
+
+.type-tab.active {
+    background: linear-gradient(135deg, #667eea, #764ba2) !important;
+    color: #ffffff !important;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.5) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3) !important;
+}
+
+/* 映射卡片样式 */
+.map-card {
+    background: linear-gradient(145deg, #2a2a3e, #1e1e32) !important;
+    border-radius: 16px !important;
+    padding: 25px !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+    border: 2px solid transparent !important;
+    position: relative !important;
+    overflow: hidden !important;
+}
+
+.map-card:hover {
+    transform: translateY(-8px) !important;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4) !important;
+    border-color: rgba(100, 255, 218, 0.3) !important;
+}
+
+.map-card.active {
+    border-color: #64ffda !important;
+    background: linear-gradient(145deg, #2e2e4a, #252541) !important;
+    transform: translateY(-5px) !important;
+    box-shadow: 0 12px 35px rgba(100, 255, 218, 0.2) !important;
+}
+
+/* 确保卡片网格布局 */
+.map-gallery {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) !important;
+    gap: 20px !important;
+}
+
+/* 按钮样式 */
+.action-btn {
+    background: linear-gradient(135deg, #667eea, #764ba2) !important;
+    border: none !important;
+    color: #ffffff !important;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.5) !important;
+    padding: 12px 24px !important;
+    border-radius: 25px !important;
+    cursor: pointer !important;
+    font-weight: 600 !important;
+    transition: all 0.3s ease !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    text-decoration: none !important;
+}
+
+.action-btn:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4) !important;
+    background: linear-gradient(135deg, #5a6fd8, #6a4c93) !important;
+}
+
+/* 分析结果区域样式 */
+.analysis-results {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border-radius: 15px !important;
+    padding: 20px !important;
+    margin-top: 20px !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.analysis-results h4 {
+    color: #64ffda !important;
+    margin-bottom: 15px !important;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.5) !important;
+}
+
+.analysis-section {
+    background: rgba(255, 255, 255, 0.03) !important;
+    border-radius: 10px !important;
+    padding: 15px !important;
+    margin-bottom: 15px !important;
+    border-left: 4px solid #64ffda !important;
+}
+
+.analysis-section h5 {
+    color: #64ffda !important;
+    margin-bottom: 10px !important;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.5) !important;
+}
+
+.analysis-section p, .analysis-section div, .analysis-section span {
+    color: #e0e0e0 !important;
+    text-shadow: 0 1px 1px rgba(0,0,0,0.3) !important;
+}
+
+.stability-item {
+    background: rgba(255, 255, 255, 0.02) !important;
+    padding: 10px !important;
+    border-radius: 8px !important;
+    margin-bottom: 8px !important;
+}
+
+.stability-item span {
+    color: #e0e0e0 !important;
+    text-shadow: 0 1px 1px rgba(0,0,0,0.3) !important;
+}
+
+.periodic-orbit {
+    background: rgba(255, 255, 255, 0.02) !important;
+    padding: 12px !important;
+    border-radius: 8px !important;
+    margin-bottom: 10px !important;
+}
+
+.periodic-orbit strong {
+    color: #64ffda !important;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.5) !important;
+}
+
+.lyapunov-result {
+    background: rgba(255, 255, 255, 0.02) !important;
+    padding: 12px !important;
+    border-radius: 8px !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.lyapunov-result span {
+    color: #e0e0e0 !important;
+    text-shadow: 0 1px 1px rgba(0,0,0,0.3) !important;
+}
+
+.lyapunov-result small {
+    color: #b0bec5 !important;
+    text-shadow: 0 1px 1px rgba(0,0,0,0.3) !important;
+}
+
+/* 修复固定点列表样式 */
+.fixed-points-list {
+    list-style: none !important;
+    padding: 0 !important;
+}
+
+.fixed-points-list li {
+    background: rgba(255, 255, 255, 0.02) !important;
+    padding: 8px 12px !important;
+    margin-bottom: 5px !important;
+    border-radius: 6px !important;
+    border-left: 3px solid #64ffda !important;
+}
+
+.point-label {
+    color: #64ffda !important;
+    font-weight: bold !important;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.5) !important;
+}
+
+.point-value {
+    color: #e0e0e0 !important;
+    text-shadow: 0 1px 1px rgba(0,0,0,0.3) !important;
+}
+
+/* 教育说明样式 */
+.educational-note {
+    background: rgba(100, 255, 218, 0.1) !important;
+    border-radius: 8px !important;
+    padding: 10px !important;
+    margin-bottom: 10px !important;
+    border-left: 3px solid #64ffda !important;
+}
+
+.educational-note p {
+    color: #e0e0e0 !important;
+    margin: 0 !important;
+    text-shadow: 0 1px 1px rgba(0,0,0,0.3) !important;
+}
+
+/* 分析概览样式 */
+.analysis-overview {
+    background: rgba(102, 126, 234, 0.1) !important;
+    border-radius: 10px !important;
+    padding: 15px !important;
+    margin-bottom: 15px !important;
+    border: 1px solid rgba(102, 126, 234, 0.2) !important;
+}
+
+.analysis-overview h5 {
+    color: #667eea !important;
+    margin-bottom: 8px !important;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.5) !important;
+}
+
+.analysis-description {
+    color: #e0e0e0 !important;
+    margin: 0 !important;
+    text-shadow: 0 1px 1px rgba(0,0,0,0.3) !important;
+}
+
+.analysis-description strong {
+    color: #64ffda !important;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.5) !important;
+}
+
+/* 通用文字样式修复 */
+.tab-content {
+    color: #e0e0e0 !important;
+}
+
+.plot-container {
+    background: rgba(255, 255, 255, 0.03) !important;
+    border-radius: 10px !important;
+    padding: 15px !important;
+    margin-top: 15px !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.plot-header h3 {
+    color: #64ffda !important;
+    margin-bottom: 15px !important;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.5) !important;
+}
+
+.plot-controls {
+    display: flex !important;
+    gap: 15px !important;
+    align-items: center !important;
+    flex-wrap: wrap !important;
+}
+
+/* 输入框样式 */
+.input-group label {
+    color: #b0bec5 !important;
+    font-weight: 500 !important;
+    text-shadow: 0 1px 1px rgba(0,0,0,0.3) !important;
+    margin-right: 8px !important;
+}
+
+.input-group input, .input-group select {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    color: #e0e0e0 !important;
+    border-radius: 6px !important;
+    padding: 6px 10px !important;
+}
+
+.input-group input:focus, .input-group select:focus {
+    background: rgba(255, 255, 255, 0.15) !important;
+    border-color: #64ffda !important;
+    outline: none !important;
+    box-shadow: 0 0 0 2px rgba(100, 255, 218, 0.2) !important;
+}
+
+.param-range {
+    color: #90a4ae !important;
+    font-size: 0.85em !important;
+    margin-left: 8px !important;
+    text-shadow: 0 1px 1px rgba(0,0,0,0.3) !important;
+}
+
+/* 参数控制区域 */
+.parameter-controls h3, .parameter-controls h4 {
+    color: #64ffda !important;
+    margin-bottom: 12px !important;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.5) !important;
+}
+
+.discrete-controls-section h2 {
+    color: #64ffda !important;
+    margin-bottom: 15px !important;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.5) !important;
+}
+
+.section-description {
+    color: #b0bec5 !important;
+    margin-bottom: 20px !important;
+    text-shadow: 0 1px 1px rgba(0,0,0,0.3) !important;
+}
+
+/* 映射描述样式 */
+.map-description p {
+    color: #b0bec5 !important;
+    text-shadow: 0 1px 1px rgba(0,0,0,0.3) !important;
+}
+
+/* 选项卡样式 */
+.tab-btn {
+    background: rgba(255, 255, 255, 0.05) !important;
+    color: #b0bec5 !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    padding: 10px 15px !important;
+    border-radius: 8px !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+    text-shadow: 0 1px 1px rgba(0,0,0,0.3) !important;
+}
+
+.tab-btn.active {
+    background: linear-gradient(135deg, #667eea, #764ba2) !important;
+    color: #ffffff !important;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.5) !important;
+}
+
+.tab-btn:hover:not(.active) {
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: #64ffda !important;
+}
+
+/* Plotly 图表容器完全重构 */
+.plot-container {
+    background: rgba(255, 255, 255, 0.03) !important;
+    border-radius: 10px !important;
+    padding: 20px !important;
+    margin: 20px 0 !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    width: 100% !important;
+    height: 500px !important;
+    min-height: 500px !important;
+    max-height: 500px !important;
+    position: relative !important;
+    overflow: visible !important;
+    box-sizing: border-box !important;
+    display: block !important;
+    clear: both !important;
+}
+
+/* 特定的 Plotly 图表 DIV - 强制尺寸 */
+#trajectoryPlot,
+#cobwebPlot,
+#bifurcationPlot,
+#returnMapPlot,
+#phasePortraitPlot {
+    width: 100% !important;
+    height: 450px !important;
+    min-height: 450px !important;
+    max-height: 450px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    position: relative !important;
+    box-sizing: border-box !important;
+    display: block !important;
+    overflow: visible !important;
+}
+
+/* 强制分岔图使用浅色背景 */
+#bifurcationPlot.plot-container,
+#bifurcationPlot .js-plotly-plot,
+#bifurcationPlot .plotly-graph-div {
+    background: #f8f9fa !important;
+}
+
+#bifurcationPlot svg.main-svg,
+#bifurcationPlot canvas {
+    background: transparent !important;
+}
+
+/* Plotly 内部元素强制设置 */
+.plot-container .js-plotly-plot {
+    width: 100% !important;
+    height: 450px !important;
+    min-height: 450px !important;
+    position: relative !important;
+    display: block !important;
+}
+
+.plot-container .plotly-graph-div {
+    width: 100% !important;
+    height: 450px !important;
+    min-height: 450px !important;
+    position: relative !important;
+    display: block !important;
+}
+
+/* 修复 Plotly SVG 和 Canvas 元素 */
+.plot-container svg.main-svg,
+.plot-container canvas {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    max-width: none !important;
+    max-height: none !important;
+}
+
+/* 确保父容器布局正确 */
+.analysis-panel {
+    width: 100% !important;
+    max-width: none !important;
+    margin-top: 20px !important;
+    display: block !important;
+    position: relative !important;
+}
+
+.tab-content {
+    color: #e0e0e0 !important;
+    width: 100% !important;
+    display: block !important;
+    position: relative !important;
+}
+
+.tab-pane {
+    width: 100% !important;
+    min-height: 600px !important;
+    display: none !important;
+    position: relative !important;
+    clear: both !important;
+}
+
+.tab-pane.active {
+    display: block !important;
+}
+
+/* 修复可能的浮动和定位问题 */
+.plot-header {
+    width: 100% !important;
+    display: block !important;
+    margin-bottom: 15px !important;
+    clear: both !important;
+}
+
+/* 强制 Plotly 不使用绝对定位 */
+.modebar {
+    position: absolute !important;
+    top: 10px !important;
+    right: 10px !important;
+    z-index: 1001 !important;
+}
+
+/* ========== 错误模态框样式修复 ========== */
+.modal {
+    display: none !important;
+    position: fixed !important;
+    z-index: 9999 !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    background-color: rgba(0, 0, 0, 0.8) !important;
+    backdrop-filter: blur(5px) !important;
+    justify-content: center !important;
+    align-items: center !important;
+}
+
+.modal-content {
+    background: linear-gradient(145deg, #1e213a, #16213e) !important;
+    margin: auto !important;
+    padding: 0 !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    border-radius: 15px !important;
+    width: 90% !important;
+    max-width: 500px !important;
+    position: relative !important;
+    animation: modalSlideIn 0.3s ease-out !important;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5) !important;
+}
+
+.modal-header {
+    background: rgba(255, 111, 107, 0.1) !important;
+    padding: 20px 25px !important;
+    border-bottom: 1px solid rgba(255, 111, 107, 0.2) !important;
+    border-radius: 15px 15px 0 0 !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+}
+
+.modal-header h3 {
+    color: #ff6f6b !important;
+    margin: 0 !important;
+    font-size: 1.4rem !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+}
+
+.modal-close {
+    background: none !important;
+    border: none !important;
+    font-size: 1.8rem !important;
+    color: #ff6f6b !important;
+    cursor: pointer !important;
+    padding: 0 !important;
+    width: 30px !important;
+    height: 30px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 50% !important;
+    transition: all 0.3s ease !important;
+}
+
+.modal-close:hover {
+    background: rgba(255, 111, 107, 0.2) !important;
+    transform: scale(1.1) !important;
+}
+
+.modal-body {
+    padding: 25px !important;
+    color: #e0e0e0 !important;
+    line-height: 1.6 !important;
+}
+
+.modal-body p {
+    margin: 0 !important;
+    color: #e0e0e0 !important;
+    font-size: 1.1rem !important;
+}
+
+.modal-footer {
+    padding: 20px 25px !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+    display: flex !important;
+    justify-content: center !important;
+    border-radius: 0 0 15px 15px !important;
+}
+
+.modal-footer .btn {
+    background: linear-gradient(135deg, #667eea, #764ba2) !important;
+    border: none !important;
+    color: #ffffff !important;
+    padding: 12px 30px !important;
+    border-radius: 25px !important;
+    cursor: pointer !important;
+    font-weight: 600 !important;
+    transition: all 0.3s ease !important;
+    min-width: 100px !important;
+}
+
+.modal-footer .btn:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4) !important;
+    background: linear-gradient(135deg, #5a6fd8, #6a4c93) !important;
+}
+
+.modal-footer .btn.secondary {
+    background: linear-gradient(135deg, #6c7293, #8e92a4) !important;
+}
+
+.modal-footer .btn.secondary:hover {
+    background: linear-gradient(135deg, #5a6280, #7a7f94) !important;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-50px) scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* ========== 加载遮罩层样式修复 ========== */
+.loading-overlay {
+    display: none !important;
+    position: fixed !important;
+    z-index: 9998 !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    background-color: rgba(0, 0, 0, 0.7) !important;
+    backdrop-filter: blur(3px) !important;
+    justify-content: center !important;
+    align-items: center !important;
+}
+
+.loading-content {
+    text-align: center !important;
+    color: #e0e0e0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 20px !important;
+}
+
+.loading-spinner {
+    width: 50px !important;
+    height: 50px !important;
+    border: 4px solid rgba(255, 255, 255, 0.1) !important;
+    border-left: 4px solid #64ffda !important;
+    border-radius: 50% !important;
+    animation: spin 1s linear infinite !important;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.loading-content p {
+    color: #e0e0e0 !important;
+    font-size: 1.2rem !important;
+    margin: 0 !important;
+}

@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-anim="tilt,ripple">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>相图 - 动力学系统分析器</title>    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Lora:wght@400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <!-- Theme CSS (Load First) -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css') }}">
+
+    <!-- Horizontal Layout CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/layout-horizontal.css') }}">
+
+    <!-- Base Styles -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- Phase Portrait Professional Layout -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/phase-portrait-professional.css') }}">
+    <!-- Help & Tour CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/help.css') }}">
+    <link rel="stylesheet" href="https://unpkg.com/intro.js/minified/introjs.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/themes/light.css">
+</head>
+<body>
+    <!-- Horizontal Layout Container -->
+    <div class="layout-horizontal">
+
+        <!-- Top Navigation Bar -->
+        <nav class="top-navigation">
+            <!-- Left Section -->
+            <div class="top-nav-left">
+                <!-- Sidebar Toggle Button -->
+                <button class="sidebar-toggle-btn" aria-label="切换侧边栏">
+                    <i class="fas fa-bars"></i>
+                </button>
+
+                <!-- App Logo -->
+                <div class="app-logo">
+                    <i class="fas fa-atom"></i>
+                    <span>动力学分析器</span>
+                </div>
+
+                <!-- Horizontal Navigation Tabs -->
+                <div class="top-nav-tabs">
+                    <a href="{{ url_for('index') }}" class="top-nav-tab">
+                        <i class="fas fa-home"></i> 首页
+                    </a>
+                    <a href="{{ url_for('text_generator') }}" class="top-nav-tab">
+                        <i class="fas fa-magic"></i> 智能生成
+                    </a>
+                    <a href="{{ url_for('nonlinear_analysis') }}" class="top-nav-tab">
+                        <i class="fas fa-wave-square"></i> 非线性
+                    </a>
+                    <a href="{{ url_for('chaos_analysis') }}" class="top-nav-tab">
+                        <i class="fas fa-circle-notch"></i> 混沌分析
+                    </a>
+                    <a href="{{ url_for('discrete_analysis') }}" class="top-nav-tab">
+                        <i class="fas fa-project-diagram"></i> 离散系统
+                    </a>
+                </div>
+            </div>
+
+            <!-- Right Section -->
+            <div class="top-nav-right">
+                <!-- Theme Toggle -->
+                <button class="top-nav-action" data-theme-toggle aria-label="切换主题">
+                    <i class="fas fa-moon"></i>
+                </button>
+
+                <!-- Notifications -->
+                <button class="top-nav-action" aria-label="通知">
+                    <i class="fas fa-bell"></i>
+                </button>
+
+                <!-- Settings -->
+                <button class="top-nav-action" aria-label="设置">
+                    <i class="fas fa-cog"></i>
+                </button>
+
+                <!-- Mobile Hamburger Menu -->
+                <button class="hamburger-menu" aria-label="菜单">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Collapsible Sidebar -->
+        <aside class="collapsible-sidebar">
+            <!-- Sidebar Navigation -->
+            <nav class="sidebar-nav">
+                <!-- 快速操作 -->
+                <div class="sidebar-nav-group">
+                    <div class="sidebar-nav-label">快速操作</div>
+                    <a href="{{ url_for('index') }}" class="sidebar-nav-item" data-tooltip="主页">
+                        <i class="fas fa-home"></i>
+                        <span>主页</span>
+                    </a>
+                    <a href="{{ url_for('text_generator') }}" class="sidebar-nav-item" data-tooltip="智能生成">
+                        <i class="fas fa-magic"></i>
+                        <span>智能生成</span>
+                    </a>
+                </div>
+
+                <!-- 系统分析 -->
+                <div class="sidebar-nav-group">
+                    <div class="sidebar-nav-label">系统分析</div>
+                    <a href="{{ url_for('phase_portrait') }}" class="sidebar-nav-item active" data-tooltip="线性系统">
+                        <i class="fas fa-chart-line"></i>
+                        <span>线性系统</span>
+                    </a>
+                    <a href="{{ url_for('nonlinear_analysis') }}" class="sidebar-nav-item" data-tooltip="非线性系统">
+                        <i class="fas fa-wave-square"></i>
+                        <span>非线性系统</span>
+                    </a>
+                    <a href="{{ url_for('trajectory') }}" class="sidebar-nav-item" data-tooltip="轨迹分析">
+                        <i class="fas fa-route"></i>
+                        <span>轨迹分析</span>
+                    </a>
+                    <a href="{{ url_for('enhanced_phase_portrait') }}" class="sidebar-nav-item" data-tooltip="增强相图">
+                        <i class="fas fa-expand-arrows-alt"></i>
+                        <span>增强相图</span>
+                    </a>
+                </div>
+
+                <!-- 高级功能 -->
+                <div class="sidebar-nav-group">
+                    <div class="sidebar-nav-label">高级功能</div>
+                    <a href="{{ url_for('chaos_analysis') }}" class="sidebar-nav-item" data-tooltip="混沌分析">
+                        <i class="fas fa-circle-notch"></i>
+                        <span>混沌分析</span>
+                    </a>
+                    <a href="{{ url_for('discrete_analysis') }}" class="sidebar-nav-item" data-tooltip="离散系统">
+                        <i class="fas fa-project-diagram"></i>
+                        <span>离散系统</span>
+                    </a>
+                    <a href="{{ url_for('discrete_applications') }}" class="sidebar-nav-item" data-tooltip="实际应用">
+                        <i class="fas fa-flask"></i>
+                        <span>实际应用</span>
+                    </a>
+                </div>
+
+                <!-- 文档 -->
+                <div class="sidebar-nav-group">
+                    <div class="sidebar-nav-label">文档</div>
+                    <a href="#" class="sidebar-nav-item" data-tooltip="数据库">
+                        <i class="fas fa-database"></i>
+                        <span>数据库</span>
+                    </a>
+                    <a href="#" class="sidebar-nav-item" data-tooltip="报告">
+                        <i class="fas fa-file-alt"></i>
+                        <span>报告</span>
+                    </a>
+                    <a href="#" class="sidebar-nav-item" data-tooltip="帮助">
+                        <i class="fas fa-question-circle"></i>
+                        <span>帮助</span>
+                    </a>
+                </div>
+            </nav>
+
+            <!-- User Profile -->
+            <div class="sidebar-user">
+                <div class="sidebar-user-avatar">CN</div>
+                <div class="sidebar-user-info">
+                    <div class="sidebar-user-name">shadcn</div>
+                    <div class="sidebar-user-email">m@example.com</div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content-horizontal phase-portrait-page">
+            <header class="header">
+                <h1><i class="fas fa-compass"></i> 相图分析</h1>
+                <p>可视化动力系统的向量场和流线</p>
+            </header>
+
+            <div class="portrait-main-layout">
+                <!-- 左侧控制面板 -->
+                <div class="left-panel">
+                    <!-- 矩阵输入卡片 -->
+                    <div class="control-card matrix-input-compact">
+                        <h3><i class="fas fa-th"></i> 矩阵A</h3>
+                        <div class="matrix-display-compact">
+                            <span class="bracket-left">[</span>
+                            <div class="matrix-grid-compact">
+                                <input type="number" id="a11" value="0" step="0.1" class="matrix-input-small">
+                                <input type="number" id="a12" value="1" step="0.1" class="matrix-input-small">
+                                <input type="number" id="a21" value="-1" step="0.1" class="matrix-input-small">
+                                <input type="number" id="a22" value="0" step="0.1" class="matrix-input-small">
+                            </div>
+                            <span class="bracket-right">]</span>
+                        </div>
+                        <button id="generatePortraitBtn" class="generate-btn">
+                            <i class="fas fa-play"></i> 生成相图
+                        </button>
+                    </div>
+
+                    <!-- 显示参数卡片 -->
+                    <div class="control-card parameters-section">
+                        <h3><i class="fas fa-sliders-h"></i> 显示参数</h3>
+                        <div class="parameter-grid">
+                            <label>
+                                X轴范围：
+                                <input type="number" id="xMin" value="-3.5" step="0.5" class="param-input">
+                                到
+                                <input type="number" id="xMax" value="3.5" step="0.5" class="param-input">
+                            </label>
+                            <label>
+                                Y轴范围：
+                                <input type="number" id="yMin" value="-3.5" step="0.5" class="param-input">
+                                到
+                                <input type="number" id="yMax" value="3.5" step="0.5" class="param-input">
+                            </label>
+                            <label>
+                                网格密度：
+                                <input type="range" id="gridDensity" min="10" max="30" value="20" class="slider">
+                                <span id="densityValue">20</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- 系统信息卡片 -->
+                    <div class="control-card portrait-info" id="portraitInfo" style="display: none;">
+                        <h3><i class="fas fa-info-circle"></i> 系统信息</h3>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <strong>特征值</strong>
+                                <span id="eigenvaluesInfo"></span>
+                            </div>
+                            <div class="info-item">
+                                <strong>系统类型</strong>
+                                <span id="systemTypeInfo"></span>
+                            </div>
+                            <div class="info-item">
+                                <strong>稳定性</strong>
+                                <span id="stabilityInfo"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 右侧相图显示区 -->
+                <div class="right-panel">
+                    <div class="portrait-container" id="portraitContainer">
+                        <div class="placeholder">
+                            <i class="fas fa-image"></i>
+                            <p>点击"生成相图"开始分析</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <div class="loading-overlay" id="loadingOverlay">
+            <div class="loading-spinner">
+                <i class="fas fa-spinner fa-spin"></i>
+                <p>生成相图中...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="{{ url_for('static', filename='js/theme-toggle.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/layout-horizontal.js') }}"></script>
+    <!-- Help & Tour Libraries -->
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://unpkg.com/tippy.js@6"></script>
+    <script src="https://unpkg.com/intro.js/minified/intro.min.js"></script>
+    <!-- Help System -->
+    <script src="{{ url_for('static', filename='js/help_system.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/phase_portrait.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/particles.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/animation-core.js') }}" defer></script>
+</body>
+</html>

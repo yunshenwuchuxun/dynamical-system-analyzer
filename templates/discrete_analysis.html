@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>离散动力学系统分析 - 动力学系统分析器</title>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Lora:wght@400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <!-- Theme CSS (Load First) -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css') }}">
+
+    <!-- Horizontal Layout CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/layout-horizontal.css') }}">
+
+    <!-- Base Styles -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <!-- Discrete Analysis Override Styles -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/discrete-override.css') }}">
+
+    <!-- Help & Tour CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/help.css') }}">
+    <link rel="stylesheet" href="https://unpkg.com/intro.js/minified/introjs.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/themes/light.css">
+
+    <script src="https://cdn.plot.ly/plotly-2.26.0.min.js"></script>
+</head>
+<body>
+        <!-- Horizontal Layout Container -->
+    <div class="layout-horizontal">
+
+        <!-- Top Navigation Bar -->
+        <nav class="top-navigation">
+            <div class="top-nav-left">
+                <button class="sidebar-toggle-btn" aria-label="切换侧边栏">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="app-logo">
+                    <i class="fas fa-atom"></i>
+                    <span>动力学分析器</span>
+                </div>
+                <div class="top-nav-tabs">
+                    <a href="{{ url_for('index') }}" class="top-nav-tab">
+                        <i class="fas fa-home"></i> 首页
+                    </a>
+                    <a href="{{ url_for('text_generator') }}" class="top-nav-tab">
+                        <i class="fas fa-magic"></i> 智能生成
+                    </a>
+                    <a href="{{ url_for('nonlinear_analysis') }}" class="top-nav-tab">
+                        <i class="fas fa-wave-square"></i> 非线性
+                    </a>
+                    <a href="{{ url_for('chaos_analysis') }}" class="top-nav-tab">
+                        <i class="fas fa-circle-notch"></i> 混沌分析
+                    </a>
+                    <a href="{{ url_for('discrete_analysis') }}" class="top-nav-tab active">
+                        <i class="fas fa-project-diagram"></i> 离散系统
+                    </a>
+                </div>
+            </div>
+            <div class="top-nav-right">
+                <button class="top-nav-action" data-theme-toggle aria-label="切换主题">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button class="top-nav-action" aria-label="通知">
+                    <i class="fas fa-bell"></i>
+                </button>
+                <button class="top-nav-action" aria-label="设置">
+                    <i class="fas fa-cog"></i>
+                </button>
+                <button class="hamburger-menu" aria-label="菜单">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Collapsible Sidebar -->
+        <aside class="collapsible-sidebar">
+            <nav class="sidebar-nav">
+                <div class="sidebar-nav-group">
+                    <div class="sidebar-nav-label">快速操作</div>
+                    <a href="{{ url_for('index') }}" class="sidebar-nav-item" data-tooltip="主页">
+                        <i class="fas fa-home"></i>
+                        <span>主页</span>
+                    </a>
+                    <a href="{{ url_for('text_generator') }}" class="sidebar-nav-item" data-tooltip="智能生成">
+                        <i class="fas fa-magic"></i>
+                        <span>智能生成</span>
+                    </a>
+                </div>
+                <div class="sidebar-nav-group">
+                    <div class="sidebar-nav-label">系统分析</div>
+                    <a href="{{ url_for('phase_portrait') }}" class="sidebar-nav-item" data-tooltip="线性系统">
+                        <i class="fas fa-chart-line"></i>
+                        <span>线性系统</span>
+                    </a>
+                    <a href="{{ url_for('nonlinear_analysis') }}" class="sidebar-nav-item" data-tooltip="非线性系统">
+                        <i class="fas fa-wave-square"></i>
+                        <span>非线性系统</span>
+                    </a>
+                    <a href="{{ url_for('trajectory') }}" class="sidebar-nav-item" data-tooltip="轨迹分析">
+                        <i class="fas fa-route"></i>
+                        <span>轨迹分析</span>
+                    </a>
+                    <a href="{{ url_for('enhanced_phase_portrait') }}" class="sidebar-nav-item" data-tooltip="增强相图">
+                        <i class="fas fa-expand-arrows-alt"></i>
+                        <span>增强相图</span>
+                    </a>
+                </div>
+                <div class="sidebar-nav-group">
+                    <div class="sidebar-nav-label">高级功能</div>
+                    <a href="{{ url_for('chaos_analysis') }}" class="sidebar-nav-item" data-tooltip="混沌分析">
+                        <i class="fas fa-circle-notch"></i>
+                        <span>混沌分析</span>
+                    </a>
+                    <a href="{{ url_for('discrete_analysis') }}" class="sidebar-nav-item active" data-tooltip="离散系统">
+                        <i class="fas fa-project-diagram"></i>
+                        <span>离散系统</span>
+                    </a>
+                    <a href="{{ url_for('discrete_applications') }}" class="sidebar-nav-item" data-tooltip="实际应用">
+                        <i class="fas fa-flask"></i>
+                        <span>实际应用</span>
+                    </a>
+                </div>
+                <div class="sidebar-nav-group">
+                    <div class="sidebar-nav-label">文档</div>
+                    <a href="#" class="sidebar-nav-item" data-tooltip="数据库">
+                        <i class="fas fa-database"></i>
+                        <span>数据库</span>
+                    </a>
+                    <a href="#" class="sidebar-nav-item" data-tooltip="报告">
+                        <i class="fas fa-file-alt"></i>
+                        <span>报告</span>
+                    </a>
+                    <a href="#" class="sidebar-nav-item" data-tooltip="帮助">
+                        <i class="fas fa-question-circle"></i>
+                        <span>帮助</span>
+                    </a>
+                </div>
+            </nav>
+            <div class="sidebar-user">
+                <div class="sidebar-user-avatar">CN</div>
+                <div class="sidebar-user-info">
+                    <div class="sidebar-user-name">shadcn</div>
+                    <div class="sidebar-user-email">m@example.com</div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content-horizontal">
+            <!-- Map Selection Panel -->
+            <div class="discrete-controls-section">
+                <div class="map-selection">
+                    <h2><i class="fas fa-function"></i> 离散动力学系统分析</h2>
+                    <p class="section-description">选择不同类型的离散映射来分析其动力学行为</p>
+
+                    <!-- 系统类型选择标签 -->
+                    <div class="system-type-tabs">
+                        <button class="type-tab active" data-type="nonlinear">
+                            <i class="fas fa-wave-square"></i>
+                            <span>非线性系统</span>
+                            <small>混沌、分岔、复杂动力学</small>
+                        </button>
+                        <button class="type-tab" data-type="linear">
+                            <i class="fas fa-vector-square"></i>
+                            <span>线性系统</span>
+                            <small>矩阵迭代、特征值分析</small>
+                        </button>
+                    </div>
+
+                    <!-- 非线性系统映射 -->
+                    <div class="map-category active" id="nonlinear-maps">
+                        <h3><i class="fas fa-chart-line"></i> 非线性离散映射</h3>
+                        <p class="category-description">探索非线性映射的丰富动力学现象，包括混沌、分岔和奇异吸引子</p>
+
+                        <div class="map-gallery">
+                            <div class="map-card active" data-map="logistic">
+                                <div class="map-preview">
+                                    <i class="fas fa-chart-line"></i>
+                                </div>
+                                <h4>Logistic映射</h4>
+                                <p class="map-equation">x_{n+1} = r·x_n·(1-x_n)</p>
+                                <div class="map-features">
+                                    <span class="feature-tag chaos">混沌行为</span>
+                                    <span class="feature-tag bifurcation">分岔现象</span>
+                                    <span class="feature-tag dimension">1D</span>
+                                </div>
+                                <div class="map-description">
+                                    <p>最著名的混沌映射之一，展示了从简单规则产生复杂行为的范例</p>
+                                </div>
+                            </div>
+
+                            <div class="map-card" data-map="henon">
+                                <div class="map-preview">
+                                    <i class="fas fa-chart-area"></i>
+                                </div>
+                                <h4>Hénon映射</h4>
+                                <p class="map-equation">x_{n+1} = 1 - a·x_n² + y_n<br>y_{n+1} = b·x_n</p>
+                                <div class="map-features">
+                                    <span class="feature-tag attractor">奇异吸引子</span>
+                                    <span class="feature-tag fractal">分形结构</span>
+                                    <span class="feature-tag dimension">2D</span>
+                                </div>
+                                <div class="map-description">
+                                    <p>二维混沌映射，产生经典的Hénon奇异吸引子</p>
+                                </div>
+                            </div>
+
+                            <div class="map-card" data-map="tent">
+                                <div class="map-preview">
+                                    <i class="fas fa-mountain"></i>
+                                </div>
+                                <h4>Tent映射</h4>
+                                <p class="map-equation">x_{n+1} = μ·min(x_n, 1-x_n)</p>
+                                <div class="map-features">
+                                    <span class="feature-tag chaos">完全混沌</span>
+                                    <span class="feature-tag piecewise">分段线性</span>
+                                    <span class="feature-tag dimension">1D</span>
+                                </div>
+                                <div class="map-description">
+                                    <p>分段线性映射，在μ=2时表现出完全混沌行为</p>
+                                </div>
+                            </div>
+
+                            <div class="map-card" data-map="sine">
+                                <div class="map-preview">
+                                    <i class="fas fa-wave-square"></i>
+                                </div>
+                                <h4>Sine映射</h4>
+                                <p class="map-equation">x_{n+1} = r·sin(π·x_n)</p>
+                                <div class="map-features">
+                                    <span class="feature-tag periodic">周期轨道</span>
+                                    <span class="feature-tag smooth">光滑映射</span>
+                                    <span class="feature-tag dimension">1D</span>
+                                </div>
+                                <div class="map-description">
+                                    <p>基于正弦函数的光滑非线性映射，展示周期倍化路径</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 线性系统映射 -->
+                    <div class="map-category" id="linear-maps">
+                        <h3><i class="fas fa-vector-square"></i> 线性离散映射</h3>
+                        <p class="category-description">研究线性变换的迭代行为，通过特征值分析预测系统演化</p>
+
+                        <div class="map-gallery">
+                            <div class="map-card" data-map="linear_2d">
+                                <div class="map-preview">
+                                    <i class="fas fa-vector-square"></i>
+                                </div>
+                                <h4>二维线性映射</h4>
+                                <p class="map-equation">x_{n+1} = A·x_n</p>
+                                <div class="map-features">
+                                    <span class="feature-tag stable">可预测</span>
+                                    <span class="feature-tag matrix">矩阵形式</span>
+                                    <span class="feature-tag dimension">2D</span>
+                                </div>
+                                <div class="map-description">
+                                    <p>通过2×2矩阵定义的线性变换，行为完全由特征值决定</p>
+                                </div>
+                            </div>
+
+                            <div class="map-card" data-map="linear_1d">
+                                <div class="map-preview">
+                                    <i class="fas fa-arrows-alt-h"></i>
+                                </div>
+                                <h4>一维线性映射</h4>
+                                <p class="map-equation">x_{n+1} = a·x_n + b</p>
+                                <div class="map-features">
+                                    <span class="feature-tag simple">简单形式</span>
+                                    <span class="feature-tag analytical">解析解</span>
+                                    <span class="feature-tag dimension">1D</span>
+                                </div>
+                                <div class="map-description">
+                                    <p>最简单的线性递推关系，具有明确的解析解</p>
+                                </div>
+                            </div>
+
+                            <div class="map-card" data-map="rotation_2d">
+                                <div class="map-preview">
+                                    <i class="fas fa-sync-alt"></i>
+                                </div>
+                                <h4>旋转映射</h4>
+                                <p class="map-equation">旋转矩阵 R(θ)</p>
+                                <div class="map-features">
+                                    <span class="feature-tag periodic">周期性</span>
+                                    <span class="feature-tag rotation">旋转</span>
+                                    <span class="feature-tag dimension">2D</span>
+                                </div>
+                                <div class="map-description">
+                                    <p>二维平面上的旋转变换，产生周期性或准周期性轨道</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Parameter Controls -->
+                <div class="parameter-controls">
+                    <h3><i class="fas fa-sliders-h"></i> 参数控制</h3>
+                    <div id="parameterInputs" class="parameter-inputs">
+                        <!-- Dynamic parameter inputs will be inserted here -->
+                    </div>
+
+                    <div class="initial-conditions">
+                        <h4><i class="fas fa-play"></i> 初始条件</h4>
+                        <div class="input-group">
+                            <label for="x0Input">x₀:</label>
+                            <input type="number" id="x0Input" value="0.5" step="0.01" min="0" max="1">
+                        </div>
+                        <div class="input-group" id="y0Group" style="display: none;">
+                            <label for="y0Input">y₀:</label>
+                            <input type="number" id="y0Input" value="0.1" step="0.01" min="-2" max="2">
+                        </div>
+                    </div>
+
+                    <div class="iteration-controls">
+                        <h4><i class="fas fa-repeat"></i> 迭代设置</h4>
+                        <div class="input-group">
+                            <label for="nStepsInput">迭代次数:</label>
+                            <input type="number" id="nStepsInput" value="100" min="10" max="10000">
+                        </div>
+                    </div>
+
+                    <!-- 配置管理 -->
+                    <div class="config-management">
+                        <h4><i class="fas fa-cog"></i> 配置管理</h4>
+                        <div class="config-buttons">
+                            <button id="exportConfigBtn" class="action-btn secondary">
+                                <i class="fas fa-download"></i> 导出配置
+                            </button>
+                            <button id="importConfigBtn" class="action-btn secondary">
+                                <i class="fas fa-upload"></i> 导入配置
+                            </button>
+                            <button id="shareConfigBtn" class="action-btn secondary">
+                                <i class="fas fa-share-alt"></i> 分享配置
+                            </button>
+                        </div>
+                        <input type="file" id="configFileInput" accept=".json" style="display: none;">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Analysis Panel -->
+            <div class="analysis-panel">
+                <div class="analysis-tabs">
+                    <button class="tab-btn active" data-tab="trajectory">轨迹图</button>
+                    <button class="tab-btn" data-tab="cobweb">蛛网图</button>
+                    <button class="tab-btn" data-tab="bifurcation">分岔图</button>
+                    <button class="tab-btn" data-tab="return-map">返回映射</button>
+                    <button class="tab-btn" data-tab="phase-portrait">相图(2D)</button>
+                </div>
+
+                <div class="tab-content">
+                    <!-- Trajectory Tab -->
+                    <div id="trajectory-tab" class="tab-pane active">
+                        <div class="plot-header">
+                            <h3><i class="fas fa-chart-line"></i> 轨迹时间序列</h3>
+                            <div class="plot-controls">
+                                <button id="generateTrajectoryBtn" class="action-btn primary">
+                                    <i class="fas fa-play"></i> 生成轨迹
+                                </button>
+                                <button id="analyzeSystemBtn" class="action-btn secondary">
+                                    <i class="fas fa-search"></i> 分析系统
+                                </button>
+                            </div>
+                        </div>
+                        <div id="trajectoryPlot" class="plot-container"></div>
+
+                        <div class="analysis-results" id="analysisResults" style="display: none;">
+                            <h4><i class="fas fa-info-circle"></i> 系统分析结果</h4>
+                            <div id="analysisContent"></div>
+                        </div>
+                    </div>
+
+                    <!-- Cobweb Tab -->
+                    <div id="cobweb-tab" class="tab-pane">
+                        <div class="plot-header">
+                            <h3><i class="fas fa-spider"></i> 蛛网图可视化</h3>
+                            <div class="plot-controls">
+                                <button id="generateCobwebBtn" class="action-btn primary">
+                                    <i class="fas fa-spider"></i> 生成蛛网图
+                                </button>
+                                <div class="input-group inline">
+                                    <label for="cobwebSteps">步数:</label>
+                                    <input type="number" id="cobwebSteps" value="20" min="5" max="100">
+                                </div>
+                            </div>
+                        </div>
+                        <div id="cobwebPlot" class="plot-container"></div>
+                    </div>
+
+                    <!-- Bifurcation Tab -->
+                    <div id="bifurcation-tab" class="tab-pane">
+                        <div class="plot-header">
+                            <h3><i class="fas fa-share-alt"></i> 分岔图分析</h3>
+                            <div class="plot-controls">
+                                <button id="generateBifurcationBtn" class="action-btn primary">
+                                    <i class="fas fa-chart-area"></i> 生成分岔图
+                                </button>
+                                <div class="bifurcation-params">
+                                    <div class="input-group inline">
+                                        <label for="paramName">参数:</label>
+                                        <select id="paramName">
+                                            <option value="r">r</option>
+                                        </select>
+                                    </div>
+                                    <div class="input-group inline">
+                                        <label for="paramMin">最小值:</label>
+                                        <input type="number" id="paramMin" value="2.5" step="0.1">
+                                    </div>
+                                    <div class="input-group inline">
+                                        <label for="paramMax">最大值:</label>
+                                        <input type="number" id="paramMax" value="4.0" step="0.1">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="bifurcationPlot" class="plot-container"></div>
+                    </div>
+
+                    <!-- Return Map Tab -->
+                    <div id="return-map-tab" class="tab-pane">
+                        <div class="plot-header">
+                            <h3><i class="fas fa-recycle"></i> 返回映射</h3>
+                            <div class="plot-controls">
+                                <button id="generateReturnMapBtn" class="action-btn primary">
+                                    <i class="fas fa-recycle"></i> 生成返回映射
+                                </button>
+                                <div class="input-group inline">
+                                    <label for="delayInput">延迟:</label>
+                                    <input type="number" id="delayInput" value="1" min="1" max="10">
+                                </div>
+                            </div>
+                        </div>
+                        <div id="returnMapPlot" class="plot-container"></div>
+                    </div>
+
+                    <!-- Phase Portrait Tab (2D) -->
+                    <div id="phase-portrait-tab" class="tab-pane">
+                        <div class="plot-header">
+                            <h3><i class="fas fa-compass"></i> 相图 (仅限2D映射)</h3>
+                            <div class="plot-controls">
+                                <button id="generatePhasePortraitBtn" class="action-btn primary">
+                                    <i class="fas fa-compass"></i> 生成相图
+                                </button>
+                            </div>
+                        </div>
+                        <div id="phasePortraitPlot" class="plot-container"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Test Functions -->
+            <div class="test-section">
+                <h3><i class="fas fa-vial"></i> 快速测试</h3>
+
+                <!-- Nonlinear System Tests -->
+                <div id="nonlinearTests" class="test-category">
+                    <h4><i class="fas fa-wave-square"></i> 非线性系统测试</h4>
+                    <div class="test-buttons">
+                        <button class="test-btn" data-test="logistic-chaos">
+                            <i class="fas fa-chart-line"></i>
+                            <div>
+                                <span class="test-title">Logistic混沌</span>
+                                <small>r=3.8, 混沌行为</small>
+                            </div>
+                        </button>
+                        <button class="test-btn" data-test="period-doubling">
+                            <i class="fas fa-copy"></i>
+                            <div>
+                                <span class="test-title">周期倍化</span>
+                                <small>r=3.2, 周期轨道</small>
+                            </div>
+                        </button>
+                        <button class="test-btn" data-test="henon-attractor">
+                            <i class="fas fa-chart-area"></i>
+                            <div>
+                                <span class="test-title">Hénon吸引子</span>
+                                <small>a=1.4, b=0.3</small>
+                            </div>
+                        </button>
+                        <button class="test-btn" data-test="tent-chaos">
+                            <i class="fas fa-mountain"></i>
+                            <div>
+                                <span class="test-title">Tent混沌</span>
+                                <small>μ=2.0, 完全混沌</small>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Linear System Tests -->
+                <div id="linearTests" class="test-category">
+                    <h4><i class="fas fa-vector-square"></i> 线性系统测试</h4>
+                    <div class="test-buttons">
+                        <button class="test-btn" data-test="linear-stable">
+                            <i class="fas fa-compress-arrows-alt"></i>
+                            <div>
+                                <span class="test-title">稳定线性系统</span>
+                                <small>收敛到原点</small>
+                            </div>
+                        </button>
+                        <button class="test-btn" data-test="rotation-map">
+                            <i class="fas fa-sync-alt"></i>
+                            <div>
+                                <span class="test-title">旋转映射</span>
+                                <small>θ=0.3, r=0.95</small>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Educational Content Panel -->
+            <div class="educational-panel">
+                <div class="education-header">
+                    <h3><i class="fas fa-graduation-cap"></i> 离散动力学系统知识</h3>
+                    <button id="toggleEducationBtn" class="toggle-education-btn">
+                        <i class="fas fa-chevron-down"></i> 展开学习内容
+                    </button>
+                </div>
+
+                <div id="educationContent" class="education-content" style="display: none;">
+                    <div class="education-tabs">
+                        <button class="edu-tab active" data-edu-tab="basics">
+                            <i class="fas fa-book"></i> 基础概念
+                        </button>
+                        <button class="edu-tab" data-edu-tab="examples">
+                            <i class="fas fa-calculator"></i> 典型例子
+                        </button>
+                        <button class="edu-tab" data-edu-tab="applications">
+                            <i class="fas fa-industry"></i> 实际应用
+                        </button>
+                    </div>
+
+                    <div class="education-panels">
+                        <!-- Basics Panel -->
+                        <div id="basicsPanel" class="edu-panel active">
+                            <h4>离散动力学基础</h4>
+
+                            <div class="concept-grid">
+                                <div class="concept-card">
+                                    <div class="concept-icon">
+                                        <i class="fas fa-step-forward"></i>
+                                    </div>
+                                    <h5>离散映射</h5>
+                                    <p>形如 x_{n+1} = f(x_n) 的迭代方程，描述系统状态的离散时间演化。</p>
+                                    <div class="concept-formula">
+                                        x_{n+1} = f(x_n)
+                                    </div>
+                                </div>
+
+                                <div class="concept-card">
+                                    <div class="concept-icon">
+                                        <i class="fas fa-dot-circle"></i>
+                                    </div>
+                                    <h5>固定点</h5>
+                                    <p>满足 x* = f(x*) 的点，代表系统的平衡状态。</p>
+                                    <div class="concept-formula">
+                                        x* = f(x*)
+                                    </div>
+                                </div>
+
+                                <div class="concept-card">
+                                    <div class="concept-icon">
+                                        <i class="fas fa-balance-scale"></i>
+                                    </div>
+                                    <h5>线性化稳定性</h5>
+                                    <p>通过计算 f'(x*) 的值判断固定点稳定性：|f'(x*)| < 1 稳定。</p>
+                                    <div class="concept-formula">
+                                        |f'(x*)| < 1
+                                    </div>
+                                </div>
+
+                                <div class="concept-card">
+                                    <div class="concept-icon">
+                                        <i class="fas fa-share-alt"></i>
+                                    </div>
+                                    <h5>分岔现象</h5>
+                                    <p>参数变化时系统行为的质性改变，如固定点的产生、消失或稳定性变化。</p>
+                                    <div class="concept-formula">
+                                        λ(μ) = 1
+                                    </div>
+                                </div>
+
+                                <div class="concept-card">
+                                    <div class="concept-icon">
+                                        <i class="fas fa-atom"></i>
+                                    </div>
+                                    <h5>混沌行为</h5>
+                                    <p>对初始条件敏感依赖的非周期轨道，李雅普诺夫指数为正。</p>
+                                    <div class="concept-formula">
+                                        λ > 0
+                                    </div>
+                                </div>
+
+                                <div class="concept-card">
+                                    <div class="concept-icon">
+                                        <i class="fas fa-sync"></i>
+                                    </div>
+                                    <h5>周期轨道</h5>
+                                    <p>经过 p 次迭代后回到起始点的轨道：f^p(x) = x。</p>
+                                    <div class="concept-formula">
+                                        f^p(x) = x
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Examples Panel -->
+                        <div id="examplesPanel" class="edu-panel">
+                            <h4>典型离散系统例子</h4>
+
+                            <div class="example-systems">
+                                <div class="system-example">
+                                    <h5><i class="fas fa-chart-line"></i> Logistic映射</h5>
+                                    <div class="system-equation">x_{n+1} = r·x_n·(1-x_n)</div>
+                                    <div class="system-description">
+                                        <p>最著名的混沌映射，展示了丰富的动力学行为：</p>
+                                        <ul>
+                                            <li><strong>r < 1:</strong> 固定点 x* = 0 稳定</li>
+                                            <li><strong>1 < r < 3:</strong> 固定点 x* = (r-1)/r 稳定</li>
+                                            <li><strong>3 < r < 1+√6:</strong> 2周期轨道</li>
+                                            <li><strong>r > 3.57:</strong> 混沌行为</li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div class="system-example">
+                                    <h5><i class="fas fa-chart-area"></i> Hénon映射</h5>
+                                    <div class="system-equation">
+                                        x_{n+1} = 1 - a·x_n² + y_n<br>
+                                        y_{n+1} = b·x_n
+                                    </div>
+                                    <div class="system-description">
+                                        <p>二维非线性映射，产生经典的奇异吸引子：</p>
+                                        <ul>
+                                            <li><strong>标准参数:</strong> a = 1.4, b = 0.3</li>
+                                            <li><strong>特点:</strong> 分形结构的奇异吸引子</li>
+                                            <li><strong>应用:</strong> 混沌理论研究的经典模型</li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div class="system-example">
+                                    <h5><i class="fas fa-vector-square"></i> 线性映射</h5>
+                                    <div class="system-equation">x_{n+1} = A·x_n</div>
+                                    <div class="system-description">
+                                        <p>矩阵迭代系统，行为完全由特征值决定：</p>
+                                        <ul>
+                                            <li><strong>|λ| < 1:</strong> 所有轨迹收敛到原点</li>
+                                            <li><strong>|λ| > 1:</strong> 轨迹发散</li>
+                                            <li><strong>|λ| = 1:</strong> 边界情况，可能周期或准周期</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Applications Panel -->
+                        <div id="applicationsPanel" class="edu-panel">
+                            <h4>实际应用领域</h4>
+
+                            <div class="application-grid">
+                                <div class="app-category">
+                                    <div class="app-icon">
+                                        <i class="fas fa-seedling"></i>
+                                    </div>
+                                    <h5>生态学</h5>
+                                    <p>种群动态建模，如昆虫种群的季节性变化、捕食者-猎物关系等。</p>
+                                    <div class="app-example">
+                                        <strong>例子:</strong> 昆虫种群 N_{n+1} = r·N_n·e^{-N_n/K}
+                                    </div>
+                                </div>
+
+                                <div class="app-category">
+                                    <div class="app-icon">
+                                        <i class="fas fa-heartbeat"></i>
+                                    </div>
+                                    <h5>医学</h5>
+                                    <p>心律不齐分析、药物浓度建模、疾病传播模型等。</p>
+                                    <div class="app-example">
+                                        <strong>例子:</strong> 药物浓度 C_{n+1} = a·C_n + D
+                                    </div>
+                                </div>
+
+                                <div class="app-category">
+                                    <div class="app-icon">
+                                        <i class="fas fa-chart-candlestick"></i>
+                                    </div>
+                                    <h5>经济学</h5>
+                                    <p>价格波动、市场动态、经济周期分析等。</p>
+                                    <div class="app-example">
+                                        <strong>例子:</strong> 价格模型 P_{n+1} = f(P_n, 供需关系)
+                                    </div>
+                                </div>
+
+                                <div class="app-category">
+                                    <div class="app-icon">
+                                        <i class="fas fa-microchip"></i>
+                                    </div>
+                                    <h5>工程技术</h5>
+                                    <p>数字信号处理、控制系统、通信系统等。</p>
+                                    <div class="app-example">
+                                        <strong>例子:</strong> 数字滤波器 y_n = Σa_k·x_{n-k}
+                                    </div>
+                                </div>
+
+                                <div class="app-category">
+                                    <div class="app-icon">
+                                        <i class="fas fa-calculator"></i>
+                                    </div>
+                                    <h5>数值计算</h5>
+                                    <p>迭代求解方程、优化算法、分形生成等。</p>
+                                    <div class="app-example">
+                                        <strong>例子:</strong> 牛顿法 x_{n+1} = x_n - f(x_n)/f'(x_n)
+                                    </div>
+                                </div>
+
+                                <div class="app-category">
+                                    <div class="app-icon">
+                                        <i class="fas fa-atom"></i>
+                                    </div>
+                                    <h5>物理学</h5>
+                                    <p>量子映射、激光器动力学、非线性振动等。</p>
+                                    <div class="app-example">
+                                        <strong>例子:</strong> 标准映射 θ_{n+1} = θ_n + p_{n+1}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Loading Overlay -->
+        <div id="loadingOverlay" class="loading-overlay">
+            <div class="loading-content">
+                <div class="loading-spinner"></div>
+                <p>正在计算离散系统...</p>
+            </div>
+        </div>
+
+        <!-- Error Modal -->
+        <div id="errorModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3><i class="fas fa-exclamation-triangle"></i> 错误</h3>
+                    <button class="modal-close">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p id="errorMessage"></p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn secondary" id="closeErrorBtn">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Help & Tour Libraries -->
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://unpkg.com/tippy.js@6"></script>
+    <script src="https://unpkg.com/intro.js/minified/intro.min.js"></script>
+    <!-- Help System -->
+    <script src="{{ url_for('static', filename='js/help_system.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/discrete_analysis.js') }}"></script>
+
+    <!-- Scripts -->
+    <script src="{{ url_for('static', filename='js/theme-toggle.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/layout-horizontal.js') }}"></script>
+</body>
+</html>

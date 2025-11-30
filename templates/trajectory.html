@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-anim="tilt,ripple">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>轨迹动画 - 动力学系统分析器</title>    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Lora:wght@400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <!-- Theme CSS (Load First) -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css') }}">
+
+    <!-- Horizontal Layout CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/layout-horizontal.css') }}">
+
+    <!-- Base Styles -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- Help & Tour CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/help.css') }}">
+    <link rel="stylesheet" href="https://unpkg.com/intro.js/minified/introjs.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/themes/light.css">
+</head>
+<body>
+        <!-- Horizontal Layout Container -->
+    <div class="layout-horizontal">
+
+        <!-- Top Navigation Bar -->
+        <nav class="top-navigation">
+            <div class="top-nav-left">
+                <button class="sidebar-toggle-btn" aria-label="切换侧边栏">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="app-logo">
+                    <i class="fas fa-atom"></i>
+                    <span>动力学分析器</span>
+                </div>
+                <div class="top-nav-tabs">
+                    <a href="{{ url_for('index') }}" class="top-nav-tab">
+                        <i class="fas fa-home"></i> 首页
+                    </a>
+                    <a href="{{ url_for('text_generator') }}" class="top-nav-tab">
+                        <i class="fas fa-magic"></i> 智能生成
+                    </a>
+                    <a href="{{ url_for('nonlinear_analysis') }}" class="top-nav-tab">
+                        <i class="fas fa-wave-square"></i> 非线性
+                    </a>
+                    <a href="{{ url_for('chaos_analysis') }}" class="top-nav-tab">
+                        <i class="fas fa-circle-notch"></i> 混沌分析
+                    </a>
+                    <a href="{{ url_for('discrete_analysis') }}" class="top-nav-tab">
+                        <i class="fas fa-project-diagram"></i> 离散系统
+                    </a>
+                </div>
+            </div>
+            <div class="top-nav-right">
+                <button class="top-nav-action" data-theme-toggle aria-label="切换主题">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button class="top-nav-action" aria-label="通知">
+                    <i class="fas fa-bell"></i>
+                </button>
+                <button class="top-nav-action" aria-label="设置">
+                    <i class="fas fa-cog"></i>
+                </button>
+                <button class="hamburger-menu" aria-label="菜单">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Collapsible Sidebar -->
+        <aside class="collapsible-sidebar">
+            <nav class="sidebar-nav">
+                <div class="sidebar-nav-group">
+                    <div class="sidebar-nav-label">快速操作</div>
+                    <a href="{{ url_for('index') }}" class="sidebar-nav-item" data-tooltip="主页">
+                        <i class="fas fa-home"></i>
+                        <span>主页</span>
+                    </a>
+                    <a href="{{ url_for('text_generator') }}" class="sidebar-nav-item" data-tooltip="智能生成">
+                        <i class="fas fa-magic"></i>
+                        <span>智能生成</span>
+                    </a>
+                </div>
+                <div class="sidebar-nav-group">
+                    <div class="sidebar-nav-label">系统分析</div>
+                    <a href="{{ url_for('phase_portrait') }}" class="sidebar-nav-item" data-tooltip="线性系统">
+                        <i class="fas fa-chart-line"></i>
+                        <span>线性系统</span>
+                    </a>
+                    <a href="{{ url_for('nonlinear_analysis') }}" class="sidebar-nav-item" data-tooltip="非线性系统">
+                        <i class="fas fa-wave-square"></i>
+                        <span>非线性系统</span>
+                    </a>
+                    <a href="{{ url_for('trajectory') }}" class="sidebar-nav-item active" data-tooltip="轨迹分析">
+                        <i class="fas fa-route"></i>
+                        <span>轨迹分析</span>
+                    </a>
+                    <a href="{{ url_for('enhanced_phase_portrait') }}" class="sidebar-nav-item" data-tooltip="增强相图">
+                        <i class="fas fa-expand-arrows-alt"></i>
+                        <span>增强相图</span>
+                    </a>
+                </div>
+                <div class="sidebar-nav-group">
+                    <div class="sidebar-nav-label">高级功能</div>
+                    <a href="{{ url_for('chaos_analysis') }}" class="sidebar-nav-item" data-tooltip="混沌分析">
+                        <i class="fas fa-circle-notch"></i>
+                        <span>混沌分析</span>
+                    </a>
+                    <a href="{{ url_for('discrete_analysis') }}" class="sidebar-nav-item" data-tooltip="离散系统">
+                        <i class="fas fa-project-diagram"></i>
+                        <span>离散系统</span>
+                    </a>
+                    <a href="{{ url_for('discrete_applications') }}" class="sidebar-nav-item" data-tooltip="实际应用">
+                        <i class="fas fa-flask"></i>
+                        <span>实际应用</span>
+                    </a>
+                </div>
+                <div class="sidebar-nav-group">
+                    <div class="sidebar-nav-label">文档</div>
+                    <a href="#" class="sidebar-nav-item" data-tooltip="数据库">
+                        <i class="fas fa-database"></i>
+                        <span>数据库</span>
+                    </a>
+                    <a href="#" class="sidebar-nav-item" data-tooltip="报告">
+                        <i class="fas fa-file-alt"></i>
+                        <span>报告</span>
+                    </a>
+                    <a href="#" class="sidebar-nav-item" data-tooltip="帮助">
+                        <i class="fas fa-question-circle"></i>
+                        <span>帮助</span>
+                    </a>
+                </div>
+            </nav>
+            <div class="sidebar-user">
+                <div class="sidebar-user-avatar">CN</div>
+                <div class="sidebar-user-info">
+                    <div class="sidebar-user-name">shadcn</div>
+                    <div class="sidebar-user-email">m@example.com</div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content-horizontal trajectory-page-layout">
+            <!-- 左侧控制面板 -->
+            <div class="trajectory-left-panel">
+                <div class="matrix-input-compact">
+                    <h3>矩阵A：</h3>
+                    <div class="matrix-display-compact">
+                        <span class="bracket-left">[</span>
+                        <div class="matrix-grid-compact">
+                            <input type="number" id="a11" value="0" step="0.1" class="matrix-input-small">
+                            <input type="number" id="a12" value="1" step="0.1" class="matrix-input-small">
+                            <input type="number" id="a21" value="-1" step="0.1" class="matrix-input-small">
+                            <input type="number" id="a22" value="0" step="0.1" class="matrix-input-small">
+                        </div>
+                        <span class="bracket-right">]</span>
+                    </div>
+
+                    <!-- 实时滑块控制 -->
+                    <div class="matrix-sliders">
+                        <div class="slider-group">
+                            <label>a₁₁: <span id="a11Value">0.0</span></label>
+                            <input type="range" id="a11Slider" min="-3" max="3" step="0.1" value="0" class="matrix-slider">
+                        </div>
+                        <div class="slider-group">
+                            <label>a₁₂: <span id="a12Value">1.0</span></label>
+                            <input type="range" id="a12Slider" min="-3" max="3" step="0.1" value="1" class="matrix-slider">
+                        </div>
+                        <div class="slider-group">
+                            <label>a₂₁: <span id="a21Value">-1.0</span></label>
+                            <input type="range" id="a21Slider" min="-3" max="3" step="0.1" value="-1" class="matrix-slider">
+                        </div>
+                        <div class="slider-group">
+                            <label>a₂₂: <span id="a22Value">0.0</span></label>
+                            <input type="range" id="a22Slider" min="-3" max="3" step="0.1" value="0" class="matrix-slider">
+                        </div>
+                        <button id="realTimeBtn" class="realtime-btn">
+                            <i class="fas fa-sync-alt"></i> 实时更新
+                        </button>
+                    </div>
+                </div>
+
+                <div class="initial-point-input">
+                    <h3>初始点：</h3>
+                    <div class="point-inputs">
+                        <label>
+                            X₀: <input type="number" id="x0" value="1" step="0.1" class="coord-input">
+                        </label>
+                        <label>
+                            Y₀: <input type="number" id="y0" value="0" step="0.1" class="coord-input">
+                        </label>
+                    </div>
+                    <button id="addPointBtn" class="add-point-btn">
+                        <i class="fas fa-plus"></i> 添加轨迹
+                    </button>
+                </div>
+
+                <div class="animation-controls">
+                    <h3>动画控制：</h3>
+                    <div class="control-buttons">
+                        <button id="playBtn" class="control-btn play">
+                            <i class="fas fa-play"></i> 播放
+                        </button>
+                        <button id="pauseBtn" class="control-btn pause" disabled>
+                            <i class="fas fa-pause"></i> 暂停
+                        </button>
+                        <button id="resetBtn" class="control-btn reset">
+                            <i class="fas fa-redo"></i> 重置
+                        </button>
+                        <button id="clearBtn" class="control-btn clear">
+                            <i class="fas fa-trash"></i> 清除
+                        </button>
+                    </div>
+
+                    <div class="animation-settings">
+                        <label>
+                            速度: <input type="range" id="speedSlider" min="1" max="10" value="5" class="slider">
+                            <span id="speedValue">5</span>x
+                        </label>
+                        <label>
+                            时长: <input type="number" id="timeSpan" value="10" min="1" max="50" class="time-input"> 秒
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 右侧显示区域 -->
+            <div class="trajectory-right-panel">
+                <!-- 上方：绘图区域 -->
+                <div class="canvas-container">
+                    <canvas id="trajectoryCanvas" width="800" height="600"></canvas>
+                    <div class="canvas-overlay">
+                        <div class="axis-labels">
+                            <span class="x-label">x</span>
+                            <span class="y-label">y</span>
+                        </div>
+                        <div class="current-point-info" id="currentPointInfo">
+                            <strong>当前位置:</strong> <span id="currentCoords">(0, 0)</span><br>
+                            <strong>时间:</strong> <span id="currentTime">0.00</span>s
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 下方：轨迹列表 -->
+                <div class="trajectory-list">
+                    <h3>轨迹列表：</h3>
+                    <div id="trajectoryList" class="trajectory-items">
+                        <p class="no-trajectories">暂无轨迹，点击"添加轨迹"开始</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <div class="loading-overlay" id="loadingOverlay">
+            <div class="loading-spinner">
+                <i class="fas fa-spinner fa-spin"></i>
+                <p>计算轨迹中...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Help & Tour Libraries -->
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://unpkg.com/tippy.js@6"></script>
+    <script src="https://unpkg.com/intro.js/minified/intro.min.js"></script>
+    <!-- Help System -->
+    <script src="{{ url_for('static', filename='js/help_system.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/trajectory.js') }}"></script>
+
+    <!-- Scripts -->
+    <script src="{{ url_for('static', filename='js/theme-toggle.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/layout-horizontal.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/particles.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/animation-core.js') }}" defer></script>
+</body>
+</html>

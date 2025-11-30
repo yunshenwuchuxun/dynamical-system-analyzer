@@ -1,0 +1,524 @@
+/* ===================================
+   Neobrutalism Theme System
+   Based on provided design system
+   =================================== */
+
+:root {
+  /* Core Color Palette - Light Mode */
+  --background: oklch(0.9399 0.0203 345.6985);
+  --foreground: oklch(0.4712 0 0);
+  --card: oklch(0.9498 0.0500 86.8891);
+  --card-foreground: oklch(0.4712 0 0);
+  --popover: oklch(1.0000 0 0);
+  --popover-foreground: oklch(0.4712 0 0);
+  --primary: oklch(0.6209 0.1801 348.1385);
+  --primary-foreground: oklch(1.0000 0 0);
+  --secondary: oklch(0.8095 0.0694 198.1863);
+  --secondary-foreground: oklch(0.3211 0 0);
+  --muted: oklch(0.8800 0.0504 212.0952);
+  --muted-foreground: oklch(0.5795 0 0);
+  --accent: oklch(0.9195 0.0801 87.6670);
+  --accent-foreground: oklch(0.3211 0 0);
+  --destructive: oklch(0.7091 0.1697 21.9551);
+  --destructive-foreground: oklch(1.0000 0 0);
+  --border: oklch(0.6209 0.1801 348.1385);
+  --input: oklch(0.9189 0 0);
+  --ring: oklch(0.7002 0.1597 350.7532);
+
+  /* Chart Colors */
+  --chart-1: oklch(0.7002 0.1597 350.7532);
+  --chart-2: oklch(0.8189 0.0799 212.0892);
+  --chart-3: oklch(0.9195 0.0801 87.6670);
+  --chart-4: oklch(0.7998 0.1110 348.1791);
+  --chart-5: oklch(0.6197 0.1899 353.9091);
+
+  /* Sidebar Colors */
+  --sidebar: oklch(0.9140 0.0424 343.0913);
+  --sidebar-foreground: oklch(0.3211 0 0);
+  --sidebar-primary: oklch(0.6559 0.2118 354.3084);
+  --sidebar-primary-foreground: oklch(1.0000 0 0);
+  --sidebar-accent: oklch(0.8228 0.1095 346.0184);
+  --sidebar-accent-foreground: oklch(0.3211 0 0);
+  --sidebar-border: oklch(0.9464 0.0327 307.1745);
+  --sidebar-ring: oklch(0.6559 0.2118 354.3084);
+
+  /* Typography */
+  --font-sans: Poppins, sans-serif;
+  --font-serif: Lora, serif;
+  --font-mono: Fira Code, monospace;
+
+  /* Border Radius */
+  --radius: 0.4rem;
+
+  /* Neobrutalism Shadow System */
+  --shadow-x: 3px;
+  --shadow-y: 3px;
+  --shadow-blur: 0px;
+  --shadow-spread: 0px;
+  --shadow-opacity: 1.0;
+  --shadow-color: #d1519a;
+  --shadow-2xs: 3px 3px 0px 0px hsl(325.7813 58.1818% 56.8627% / 0.50);
+  --shadow-xs: 3px 3px 0px 0px hsl(325.7813 58.1818% 56.8627% / 0.50);
+  --shadow-sm: 3px 3px 0px 0px hsl(325.7813 58.1818% 56.8627% / 1.00), 3px 1px 2px -1px hsl(325.7813 58.1818% 56.8627% / 1.00);
+  --shadow: 3px 3px 0px 0px hsl(325.7813 58.1818% 56.8627% / 1.00), 3px 1px 2px -1px hsl(325.7813 58.1818% 56.8627% / 1.00);
+  --shadow-md: 3px 3px 0px 0px hsl(325.7813 58.1818% 56.8627% / 1.00), 3px 2px 4px -1px hsl(325.7813 58.1818% 56.8627% / 1.00);
+  --shadow-lg: 3px 3px 0px 0px hsl(325.7813 58.1818% 56.8627% / 1.00), 3px 4px 6px -1px hsl(325.7813 58.1818% 56.8627% / 1.00);
+  --shadow-xl: 3px 3px 0px 0px hsl(325.7813 58.1818% 56.8627% / 1.00), 3px 8px 10px -1px hsl(325.7813 58.1818% 56.8627% / 1.00);
+  --shadow-2xl: 3px 3px 0px 0px hsl(325.7813 58.1818% 56.8627% / 2.50);
+
+  /* Letter Spacing */
+  --tracking-normal: 0em;
+  --spacing: 0.25rem;
+}
+
+.dark {
+  /* Dark Mode Color Palette */
+  --background: oklch(0.2497 0.0305 234.1628);
+  --foreground: oklch(0.9306 0.0197 349.0785);
+  --card: oklch(0.2902 0.0299 233.5352);
+  --card-foreground: oklch(0.9306 0.0197 349.0785);
+  --popover: oklch(0.2902 0.0299 233.5352);
+  --popover-foreground: oklch(0.9306 0.0197 349.0785);
+  --primary: oklch(0.9195 0.0801 87.6670);
+  --primary-foreground: oklch(0.2497 0.0305 234.1628);
+  --secondary: oklch(0.7794 0.0803 4.1330);
+  --secondary-foreground: oklch(0.2497 0.0305 234.1628);
+  --muted: oklch(0.2713 0.0086 255.5780);
+  --muted-foreground: oklch(0.7794 0.0803 4.1330);
+  --accent: oklch(0.6699 0.0988 356.9762);
+  --accent-foreground: oklch(0.9306 0.0197 349.0785);
+  --destructive: oklch(0.6702 0.1806 350.3599);
+  --destructive-foreground: oklch(0.2497 0.0305 234.1628);
+  --border: oklch(0.3907 0.0399 242.2181);
+  --input: oklch(0.3093 0.0305 232.0027);
+  --ring: oklch(0.6998 0.0896 201.8672);
+
+  /* Dark Mode Chart Colors */
+  --chart-1: oklch(0.6998 0.0896 201.8672);
+  --chart-2: oklch(0.7794 0.0803 4.1330);
+  --chart-3: oklch(0.6699 0.0988 356.9762);
+  --chart-4: oklch(0.4408 0.0702 217.0848);
+  --chart-5: oklch(0.2713 0.0086 255.5780);
+
+  /* Dark Mode Sidebar */
+  --sidebar: oklch(0.2303 0.0270 235.9743);
+  --sidebar-foreground: oklch(0.9670 0.0029 264.5419);
+  --sidebar-primary: oklch(0.6559 0.2118 354.3084);
+  --sidebar-primary-foreground: oklch(1.0000 0 0);
+  --sidebar-accent: oklch(0.8228 0.1095 346.0184);
+  --sidebar-accent-foreground: oklch(0.2781 0.0296 256.8480);
+  --sidebar-border: oklch(0.3729 0.0306 259.7328);
+  --sidebar-ring: oklch(0.6559 0.2118 354.3084);
+
+  /* Dark Mode Shadow System */
+  --shadow-color: #324859;
+  --shadow-2xs: 3px 3px 0px 0px hsl(206.1538 28.0576% 27.2549% / 0.50);
+  --shadow-xs: 3px 3px 0px 0px hsl(206.1538 28.0576% 27.2549% / 0.50);
+  --shadow-sm: 3px 3px 0px 0px hsl(206.1538 28.0576% 27.2549% / 1.00), 3px 1px 2px -1px hsl(206.1538 28.0576% 27.2549% / 1.00);
+  --shadow: 3px 3px 0px 0px hsl(206.1538 28.0576% 27.2549% / 1.00), 3px 1px 2px -1px hsl(206.1538 28.0576% 27.2549% / 1.00);
+  --shadow-md: 3px 3px 0px 0px hsl(206.1538 28.0576% 27.2549% / 1.00), 3px 2px 4px -1px hsl(206.1538 28.0576% 27.2549% / 1.00);
+  --shadow-lg: 3px 3px 0px 0px hsl(206.1538 28.0576% 27.2549% / 1.00), 3px 4px 6px -1px hsl(206.1538 28.0576% 27.2549% / 1.00);
+  --shadow-xl: 3px 3px 0px 0px hsl(206.1538 28.0576% 27.2549% / 1.00), 3px 8px 10px -1px hsl(206.1538 28.0576% 27.2549% / 1.00);
+  --shadow-2xl: 3px 3px 0px 0px hsl(206.1538 28.0576% 27.2549% / 2.50);
+}
+
+/* ===================================
+   Apply Theme to Body
+   =================================== */
+
+body {
+  font-family: var(--font-sans);
+  background: var(--background);
+  color: var(--foreground);
+  min-height: 100vh;
+  line-height: 1.6;
+}
+
+/* ===================================
+   Card Components
+   =================================== */
+
+.card,
+.result-card,
+.system-card,
+.map-card,
+.analysis-card {
+  background: var(--card);
+  color: var(--card-foreground);
+  border-radius: calc(var(--radius) + 8px);
+  border: 2px solid var(--border);
+  box-shadow: var(--shadow-md);
+  transition: all 0.3s ease;
+}
+
+.card:hover,
+.result-card:hover,
+.system-card:hover,
+.map-card:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* ===================================
+   Button Components
+   =================================== */
+
+.action-btn,
+.generate-btn,
+.analyze-btn,
+.nav-btn {
+  background: var(--primary);
+  color: var(--primary-foreground);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px 24px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+  transition: all 0.3s ease;
+  font-family: var(--font-sans);
+}
+
+.action-btn:hover,
+.generate-btn:hover,
+.analyze-btn:hover,
+.nav-btn:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.action-btn:active,
+.generate-btn:active,
+.analyze-btn:active {
+  transform: translate(0, 0);
+  box-shadow: var(--shadow-xs);
+}
+
+.action-btn.secondary {
+  background: var(--secondary);
+  color: var(--secondary-foreground);
+}
+
+.action-btn.destructive {
+  background: var(--destructive);
+  color: var(--destructive-foreground);
+}
+
+/* ===================================
+   Input Components
+   =================================== */
+
+.matrix-input,
+.param-input,
+.equation-input,
+input[type="text"],
+input[type="number"],
+textarea {
+  background: var(--input);
+  color: var(--foreground);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  padding: 10px 14px;
+  font-family: var(--font-mono);
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow-xs);
+}
+
+.matrix-input:focus,
+.param-input:focus,
+.equation-input:focus,
+input[type="text"]:focus,
+input[type="number"]:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--ring);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ring) 20%, transparent);
+}
+
+/* ===================================
+   Header Components
+   =================================== */
+
+.header {
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: calc(var(--radius) + 12px);
+  padding: 30px;
+  margin-bottom: 30px;
+  box-shadow: var(--shadow-lg);
+}
+
+.header h1 {
+  font-family: var(--font-sans);
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 10px;
+}
+
+/* ===================================
+   Navigation Components
+   =================================== */
+
+.navigation {
+  background: var(--sidebar);
+  color: var(--sidebar-foreground);
+  border: 2px solid var(--sidebar-border);
+  border-radius: calc(var(--radius) + 12px);
+  padding: 25px;
+  margin-bottom: 30px;
+  box-shadow: var(--shadow-lg);
+}
+
+.nav-btn.active {
+  background: var(--sidebar-primary);
+  color: var(--sidebar-primary-foreground);
+  border-color: var(--sidebar-ring);
+  box-shadow: var(--shadow-md);
+}
+
+/* ===================================
+   Main Content Area
+   =================================== */
+
+.main-content {
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: calc(var(--radius) + 12px);
+  padding: 40px;
+  box-shadow: var(--shadow-lg);
+}
+
+/* ===================================
+   Analysis Panel
+   =================================== */
+
+.analysis-panel {
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: calc(var(--radius) + 12px);
+  padding: 30px;
+  margin-top: 40px;
+  box-shadow: var(--shadow-lg);
+}
+
+.tab-btn {
+  background: var(--muted);
+  color: var(--muted-foreground);
+  border: 2px solid transparent;
+  border-radius: var(--radius);
+  padding: 12px 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 500;
+}
+
+.tab-btn:hover {
+  background: var(--accent);
+  color: var(--accent-foreground);
+  transform: translateY(-2px);
+}
+
+.tab-btn.active {
+  background: var(--primary);
+  color: var(--primary-foreground);
+  border-color: var(--border);
+  box-shadow: var(--shadow);
+}
+
+/* ===================================
+   Plot Container
+   =================================== */
+
+.plot-container,
+.portrait-container {
+  background: var(--muted);
+  border: 3px solid var(--border);
+  border-radius: calc(var(--radius) + 8px);
+  min-height: 400px;
+  box-shadow: var(--shadow-md);
+}
+
+/* ===================================
+   Type Tab System
+   =================================== */
+
+.type-tab {
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: calc(var(--radius) + 8px);
+  padding: 20px 30px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow);
+}
+
+.type-tab:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.type-tab.active {
+  background: var(--primary);
+  color: var(--primary-foreground);
+  border-color: var(--ring);
+  box-shadow: var(--shadow-xl);
+}
+
+/* ===================================
+   Feature Tags
+   =================================== */
+
+.feature-tag {
+  background: var(--accent);
+  color: var(--accent-foreground);
+  border: 2px solid var(--border);
+  border-radius: 20px;
+  padding: 4px 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  box-shadow: var(--shadow-xs);
+}
+
+/* ===================================
+   Educational Panel
+   =================================== */
+
+.educational-panel {
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: calc(var(--radius) + 12px);
+  padding: 30px;
+  margin-top: 40px;
+  box-shadow: var(--shadow-lg);
+}
+
+.edu-tab {
+  background: var(--muted);
+  color: var(--muted-foreground);
+  border: 2px solid transparent;
+  border-radius: var(--radius);
+  padding: 12px 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.edu-tab:hover {
+  background: var(--accent);
+  color: var(--accent-foreground);
+}
+
+.edu-tab.active {
+  background: var(--primary);
+  color: var(--primary-foreground);
+  border-color: var(--border);
+  box-shadow: var(--shadow);
+}
+
+/* ===================================
+   Loading Overlay
+   =================================== */
+
+.loading-overlay {
+  background: color-mix(in srgb, var(--background) 80%, transparent);
+  backdrop-filter: blur(8px);
+}
+
+.loading-content {
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: calc(var(--radius) + 12px);
+  padding: 40px;
+  box-shadow: var(--shadow-2xl);
+}
+
+/* ===================================
+   Utility Classes
+   =================================== */
+
+.text-primary {
+  color: var(--primary);
+}
+
+.text-secondary {
+  color: var(--secondary);
+}
+
+.text-muted {
+  color: var(--muted-foreground);
+}
+
+.bg-primary {
+  background: var(--primary);
+  color: var(--primary-foreground);
+}
+
+.bg-secondary {
+  background: var(--secondary);
+  color: var(--secondary-foreground);
+}
+
+.bg-muted {
+  background: var(--muted);
+  color: var(--muted-foreground);
+}
+
+.border-primary {
+  border-color: var(--primary);
+}
+
+.border-secondary {
+  border-color: var(--secondary);
+}
+
+/* ===================================
+   Chart Styling
+   =================================== */
+
+.chart-line-1 {
+  stroke: var(--chart-1);
+}
+
+.chart-line-2 {
+  stroke: var(--chart-2);
+}
+
+.chart-line-3 {
+  stroke: var(--chart-3);
+}
+
+.chart-line-4 {
+  stroke: var(--chart-4);
+}
+
+.chart-line-5 {
+  stroke: var(--chart-5);
+}
+
+/* ===================================
+   Responsive Design
+   =================================== */
+
+@media (max-width: 768px) {
+  .header h1 {
+    font-size: 2rem;
+  }
+
+  .card,
+  .main-content,
+  .analysis-panel {
+    padding: 20px;
+  }
+}
+
+/* ===================================
+   Dark Mode Toggle Support
+   =================================== */
+
+@media (prefers-color-scheme: dark) {
+  :root:not(.light) {
+    /* Automatically apply dark mode if system preference is dark */
+    --background: oklch(0.2497 0.0305 234.1628);
+    --foreground: oklch(0.9306 0.0197 349.0785);
+  }
+}

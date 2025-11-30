@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>增强相图分析 - 动力学系统分析器</title>    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Lora:wght@400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <!-- Theme CSS (Load First) -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css') }}">
+
+    <!-- Horizontal Layout CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/layout-horizontal.css') }}">
+
+    <!-- Base Styles -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- Help & Tour CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/help.css') }}">
+    <link rel="stylesheet" href="https://unpkg.com/intro.js/minified/introjs.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/themes/light.css">
+    <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+    <!-- Polyfill removed - modern browsers don't need it -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+        <!-- Horizontal Layout Container -->
+    <div class="layout-horizontal">
+
+        <!-- Top Navigation Bar -->
+        <nav class="top-navigation">
+            <div class="top-nav-left">
+                <button class="sidebar-toggle-btn" aria-label="切换侧边栏">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="app-logo">
+                    <i class="fas fa-atom"></i>
+                    <span>动力学分析器</span>
+                </div>
+                <div class="top-nav-tabs">
+                    <a href="{{ url_for('index') }}" class="top-nav-tab">
+                        <i class="fas fa-home"></i> 首页
+                    </a>
+                    <a href="{{ url_for('text_generator') }}" class="top-nav-tab">
+                        <i class="fas fa-magic"></i> 智能生成
+                    </a>
+                    <a href="{{ url_for('nonlinear_analysis') }}" class="top-nav-tab">
+                        <i class="fas fa-wave-square"></i> 非线性
+                    </a>
+                    <a href="{{ url_for('chaos_analysis') }}" class="top-nav-tab">
+                        <i class="fas fa-circle-notch"></i> 混沌分析
+                    </a>
+                    <a href="{{ url_for('discrete_analysis') }}" class="top-nav-tab">
+                        <i class="fas fa-project-diagram"></i> 离散系统
+                    </a>
+                </div>
+            </div>
+            <div class="top-nav-right">
+                <button class="top-nav-action" data-theme-toggle aria-label="切换主题">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button class="top-nav-action" aria-label="通知">
+                    <i class="fas fa-bell"></i>
+                </button>
+                <button class="top-nav-action" aria-label="设置">
+                    <i class="fas fa-cog"></i>
+                </button>
+                <button class="hamburger-menu" aria-label="菜单">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Collapsible Sidebar -->
+        <aside class="collapsible-sidebar">
+            <nav class="sidebar-nav">
+                <div class="sidebar-nav-group">
+                    <div class="sidebar-nav-label">快速操作</div>
+                    <a href="{{ url_for('index') }}" class="sidebar-nav-item" data-tooltip="主页">
+                        <i class="fas fa-home"></i>
+                        <span>主页</span>
+                    </a>
+                    <a href="{{ url_for('text_generator') }}" class="sidebar-nav-item" data-tooltip="智能生成">
+                        <i class="fas fa-magic"></i>
+                        <span>智能生成</span>
+                    </a>
+                </div>
+                <div class="sidebar-nav-group">
+                    <div class="sidebar-nav-label">系统分析</div>
+                    <a href="{{ url_for('phase_portrait') }}" class="sidebar-nav-item" data-tooltip="线性系统">
+                        <i class="fas fa-chart-line"></i>
+                        <span>线性系统</span>
+                    </a>
+                    <a href="{{ url_for('nonlinear_analysis') }}" class="sidebar-nav-item" data-tooltip="非线性系统">
+                        <i class="fas fa-wave-square"></i>
+                        <span>非线性系统</span>
+                    </a>
+                    <a href="{{ url_for('trajectory') }}" class="sidebar-nav-item" data-tooltip="轨迹分析">
+                        <i class="fas fa-route"></i>
+                        <span>轨迹分析</span>
+                    </a>
+                    <a href="{{ url_for('enhanced_phase_portrait') }}" class="sidebar-nav-item active" data-tooltip="增强相图">
+                        <i class="fas fa-expand-arrows-alt"></i>
+                        <span>增强相图</span>
+                    </a>
+                </div>
+                <div class="sidebar-nav-group">
+                    <div class="sidebar-nav-label">高级功能</div>
+                    <a href="{{ url_for('chaos_analysis') }}" class="sidebar-nav-item" data-tooltip="混沌分析">
+                        <i class="fas fa-circle-notch"></i>
+                        <span>混沌分析</span>
+                    </a>
+                    <a href="{{ url_for('discrete_analysis') }}" class="sidebar-nav-item" data-tooltip="离散系统">
+                        <i class="fas fa-project-diagram"></i>
+                        <span>离散系统</span>
+                    </a>
+                    <a href="{{ url_for('discrete_applications') }}" class="sidebar-nav-item" data-tooltip="实际应用">
+                        <i class="fas fa-flask"></i>
+                        <span>实际应用</span>
+                    </a>
+                </div>
+                <div class="sidebar-nav-group">
+                    <div class="sidebar-nav-label">文档</div>
+                    <a href="#" class="sidebar-nav-item" data-tooltip="数据库">
+                        <i class="fas fa-database"></i>
+                        <span>数据库</span>
+                    </a>
+                    <a href="#" class="sidebar-nav-item" data-tooltip="报告">
+                        <i class="fas fa-file-alt"></i>
+                        <span>报告</span>
+                    </a>
+                    <a href="#" class="sidebar-nav-item" data-tooltip="帮助">
+                        <i class="fas fa-question-circle"></i>
+                        <span>帮助</span>
+                    </a>
+                </div>
+            </nav>
+            <div class="sidebar-user">
+                <div class="sidebar-user-avatar">CN</div>
+                <div class="sidebar-user-info">
+                    <div class="sidebar-user-name">shadcn</div>
+                    <div class="sidebar-user-email">m@example.com</div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content-horizontal">
+            <!-- Interactive Parameter Control Panel -->
+            <div class="enhanced-controls-section">
+                <div class="control-panel">
+                    <h2><i class="fas fa-sliders-h"></i> 交互式参数控制</h2>
+                    
+                    <!-- Matrix Parameter Sliders -->
+                    <div class="matrix-sliders-enhanced">
+                        <div class="slider-group-enhanced">
+                            <label for="a11-slider">a₁₁ = <span id="a11-value">0.0</span></label>
+                            <input type="range" id="a11-slider" min="-3" max="3" step="0.1" value="0" class="matrix-slider-enhanced">
+                        </div>
+                        <div class="slider-group-enhanced">
+                            <label for="a12-slider">a₁₂ = <span id="a12-value">1.0</span></label>
+                            <input type="range" id="a12-slider" min="-3" max="3" step="0.1" value="1" class="matrix-slider-enhanced">
+                        </div>
+                        <div class="slider-group-enhanced">
+                            <label for="a21-slider">a₂₁ = <span id="a21-value">-1.0</span></label>
+                            <input type="range" id="a21-slider" min="-3" max="3" step="0.1" value="-1" class="matrix-slider-enhanced">
+                        </div>
+                        <div class="slider-group-enhanced">
+                            <label for="a22-slider">a₂₂ = <span id="a22-value">0.0</span></label>
+                            <input type="range" id="a22-slider" min="-3" max="3" step="0.1" value="0" class="matrix-slider-enhanced">
+                        </div>
+                    </div>
+
+                    <!-- Real-time Analysis Display -->
+                    <div class="realtime-analysis">
+                        <div class="analysis-card">
+                            <h4><i class="fas fa-calculator"></i> 实时分析</h4>
+                            <div id="realtimeResults">
+                                <div class="metric">
+                                    <span class="metric-label">迹(tr):</span>
+                                    <span id="trace-display">0.0</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">行列式(det):</span>
+                                    <span id="det-display">1.0</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">判别式(Δ):</span>
+                                    <span id="discriminant-display">-4.0</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">系统类型:</span>
+                                    <span id="system-type-display">中心点</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Preset Exploration -->
+                    <div class="preset-exploration">
+                        <h4><i class="fas fa-star"></i> 经典系统探索</h4>
+                        <div class="preset-buttons-enhanced">
+                            <button class="preset-btn-enhanced" data-matrix="0,1,-1,0" data-name="简谐振子">
+                                <i class="fas fa-wave-square"></i> 简谐振子
+                            </button>
+                            <button class="preset-btn-enhanced" data-matrix="-0.5,1,-1,-0.5" data-name="阻尼振子">
+                                <i class="fas fa-chart-line-down"></i> 阻尼振子
+                            </button>
+                            <button class="preset-btn-enhanced" data-matrix="0.5,1,-1,0.5" data-name="不稳定焦点">
+                                <i class="fas fa-hurricane"></i> 不稳定焦点
+                            </button>
+                            <button class="preset-btn-enhanced" data-matrix="1,0,0,-1" data-name="鞍点">
+                                <i class="fas fa-exchange-alt"></i> 鞍点
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Enhanced Visualization Area -->
+            <div class="enhanced-visualization">
+                <div class="viz-main">
+                    <!-- Interactive Phase Portrait -->
+                    <div class="phase-portrait-enhanced">
+                        <h3><i class="fas fa-chart-area"></i> 交互式相图</h3>
+                        <div id="phasePortraitPlot" class="plot-container"></div>
+                        
+                        <!-- Visualization Controls -->
+                        <div class="viz-controls">
+                            <button id="toggleVectorField" class="viz-btn active">
+                                <i class="fas fa-arrows-alt"></i> 向量场
+                            </button>
+                            <button id="toggleNullclines" class="viz-btn active">
+                                <i class="fas fa-crosshairs"></i> 零倾线
+                            </button>
+                            <button id="toggleEigenvectors" class="viz-btn">
+                                <i class="fas fa-vector-square"></i> 特征向量
+                            </button>
+                            <button id="addTrajectory" class="viz-btn">
+                                <i class="fas fa-plus"></i> 添加轨迹
+                            </button>
+                            <button id="clearTrajectories" class="viz-btn">
+                                <i class="fas fa-trash"></i> 清除轨迹
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Bifurcation Analysis -->
+                    <div class="bifurcation-analysis">
+                        <h3><i class="fas fa-project-diagram"></i> 分岔分析</h3>
+                        <div id="bifurcationPlot" class="plot-container"></div>
+                        
+                        <div class="bifurcation-controls">
+                            <label>
+                                分岔参数:
+                                <select id="bifurcationParam">
+                                    <option value="a11">a₁₁</option>
+                                    <option value="a12">a₁₂</option>
+                                    <option value="a21">a₂₁</option>
+                                    <option value="a22">a₂₂</option>
+                                </select>
+                            </label>
+                            <label>
+                                参数范围:
+                                <input type="number" id="paramMin" value="-2" step="0.1" class="param-input-small">
+                                到
+                                <input type="number" id="paramMax" value="2" step="0.1" class="param-input-small">
+                            </label>
+                            <label>
+                                采样数(steps):
+                                <input type="number" id="bifurcationSteps" value="160" min="20" max="500" step="10" class="param-input-small">
+                            </label>
+                            <button id="generateBifurcation" class="generate-btn-small">
+                                <i class="fas fa-chart-line"></i> 生成分岔图
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Side Panel for Advanced Analysis -->
+                <div class="analysis-sidebar">
+                    <!-- Eigenvalue Trajectory -->
+                    <div class="eigenvalue-trajectory">
+                        <h4><i class="fas fa-route"></i> 特征值轨迹</h4>
+                        <div id="eigenvaluePlot" class="mini-plot"></div>
+                    </div>
+
+                    <!-- Stability Region Map -->
+                    <div class="stability-map">
+                        <h4><i class="fas fa-map"></i> 稳定性区域</h4>
+                        <div id="stabilityMap" class="mini-plot"></div>
+                    </div>
+
+                    <!-- Mathematical Insights -->
+                    <div class="math-insights">
+                        <h4><i class="fas fa-lightbulb"></i> 数学洞察</h4>
+                        <div id="mathInsights" class="insights-content">
+                            <div class="insight-item">
+                                <strong>当前状态:</strong>
+                                <span id="currentInsight">调整参数以探索不同的动力学行为</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Export and Share -->
+                    <div class="export-section">
+                        <h4><i class="fas fa-share"></i> 导出与分享</h4>
+                        <div class="export-buttons">
+                            <button id="exportImage" class="export-btn-small">
+                                <i class="fas fa-image"></i> 导出图像
+                            </button>
+                            <button id="exportData" class="export-btn-small">
+                                <i class="fas fa-download"></i> 导出数据
+                            </button>
+                            <button id="shareConfig" class="export-btn-small">
+                                <i class="fas fa-link"></i> 分享配置
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Interactive Tutorial -->
+            <div class="tutorial-section" id="tutorialSection">
+                <div class="tutorial-content">
+                    <h3><i class="fas fa-graduation-cap"></i> 交互式教程</h3>
+                    <div class="tutorial-steps">
+                        <div class="tutorial-step active" data-step="1">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <h4>欢迎使用增强相图分析器</h4>
+                                <p>使用滑块调整矩阵参数，观察相图的实时变化。尝试移动 a₁₁ 滑块看看会发生什么！</p>
+                            </div>
+                        </div>
+                        <div class="tutorial-step" data-step="2">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <h4>理解特征值的作用</h4>
+                                <p>观察右侧的特征值轨迹图。当特征值穿过虚轴时，系统的稳定性会发生改变。</p>
+                            </div>
+                        </div>
+                        <div class="tutorial-step" data-step="3">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <h4>探索分岔现象</h4>
+                                <p>使用分岔分析工具，观察参数变化如何导致系统行为的质变。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tutorial-controls">
+                        <button id="prevStep" class="tutorial-btn">
+                            <i class="fas fa-chevron-left"></i> 上一步
+                        </button>
+                        <button id="nextStep" class="tutorial-btn">
+                            下一步 <i class="fas fa-chevron-right"></i>
+                        </button>
+                        <button id="closeTutorial" class="tutorial-btn close">
+                            <i class="fas fa-times"></i> 关闭教程
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Loading Overlay -->
+        <div class="loading-overlay" id="loadingOverlay">
+            <div class="loading-spinner">
+                <i class="fas fa-spinner fa-spin"></i>
+                <p>生成可视化中...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Help & Tour Libraries -->
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://unpkg.com/tippy.js@6"></script>
+    <script src="https://unpkg.com/intro.js/minified/intro.min.js"></script>
+    <!-- Help System -->
+    <script src="{{ url_for('static', filename='js/help_system.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/enhanced_phase_portrait_fixed.js') }}"></script>
+
+    <!-- Scripts -->
+    <script src="{{ url_for('static', filename='js/theme-toggle.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/layout-horizontal.js') }}"></script>
+</body>
+</html>

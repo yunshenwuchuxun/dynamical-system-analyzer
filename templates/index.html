@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-anim="particles,tilt,ripple,counters">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智能动力学系统分析器 - 水平布局</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Lora:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Theme CSS (Load First) -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css') }}">
+
+    <!-- Horizontal Layout CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/layout-horizontal.css') }}">
+
+    <!-- Main Styles -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <!-- Animation Styles -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/animations.css') }}">
+</head>
+<body>
+    <!-- Horizontal Layout Container -->
+    <div class="layout-horizontal">
+
+        <!-- Top Navigation Bar -->
+        <nav class="top-navigation">
+            <!-- Left Section -->
+            <div class="top-nav-left">
+                <!-- Sidebar Toggle Button -->
+                <button class="sidebar-toggle-btn" aria-label="切换侧边栏">
+                    <i class="fas fa-bars"></i>
+                </button>
+
+                <!-- App Logo -->
+                <div class="app-logo">
+                    <i class="fas fa-atom"></i>
+                    <span>动力学分析器</span>
+                </div>
+
+                <!-- Horizontal Navigation Tabs -->
+                <div class="top-nav-tabs">
+                    <a href="{{ url_for('index') }}" class="top-nav-tab active">
+                        <i class="fas fa-home"></i> 首页
+                    </a>
+                    <a href="{{ url_for('text_generator') }}" class="top-nav-tab">
+                        <i class="fas fa-magic"></i> 智能生成
+                    </a>
+                    <a href="{{ url_for('nonlinear_analysis') }}" class="top-nav-tab">
+                        <i class="fas fa-wave-square"></i> 非线性
+                    </a>
+                    <a href="{{ url_for('chaos_analysis') }}" class="top-nav-tab">
+                        <i class="fas fa-circle-notch"></i> 混沌分析
+                    </a>
+                    <a href="{{ url_for('discrete_analysis') }}" class="top-nav-tab">
+                        <i class="fas fa-project-diagram"></i> 离散系统
+                    </a>
+                </div>
+            </div>
+
+            <!-- Right Section -->
+            <div class="top-nav-right">
+                <!-- Theme Toggle -->
+                <button class="top-nav-action" data-theme-toggle aria-label="切换主题">
+                    <i class="fas fa-moon"></i>
+                </button>
+
+                <!-- Notifications -->
+                <button class="top-nav-action" aria-label="通知">
+                    <i class="fas fa-bell"></i>
+                </button>
+
+                <!-- Settings -->
+                <button class="top-nav-action" aria-label="设置">
+                    <i class="fas fa-cog"></i>
+                </button>
+
+                <!-- Mobile Hamburger Menu -->
+                <button class="hamburger-menu" aria-label="菜单">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Collapsible Sidebar -->
+        <aside class="collapsible-sidebar">
+            <!-- Sidebar Navigation -->
+            <nav class="sidebar-nav">
+                <!-- 快速操作 -->
+                <div class="sidebar-nav-group">
+                    <div class="sidebar-nav-label">快速操作</div>
+                    <a href="{{ url_for('index') }}" class="sidebar-nav-item active" data-tooltip="主页">
+                        <i class="fas fa-home"></i>
+                        <span>主页</span>
+                    </a>
+                    <a href="{{ url_for('text_generator') }}" class="sidebar-nav-item" data-tooltip="智能生成">
+                        <i class="fas fa-magic"></i>
+                        <span>智能生成</span>
+                    </a>
+                </div>
+
+                <!-- 系统分析 -->
+                <div class="sidebar-nav-group">
+                    <div class="sidebar-nav-label">系统分析</div>
+                    <a href="{{ url_for('phase_portrait') }}" class="sidebar-nav-item" data-tooltip="线性系统">
+                        <i class="fas fa-chart-line"></i>
+                        <span>线性系统</span>
+                    </a>
+                    <a href="{{ url_for('nonlinear_analysis') }}" class="sidebar-nav-item" data-tooltip="非线性系统">
+                        <i class="fas fa-wave-square"></i>
+                        <span>非线性系统</span>
+                    </a>
+                    <a href="{{ url_for('trajectory') }}" class="sidebar-nav-item" data-tooltip="轨迹分析">
+                        <i class="fas fa-route"></i>
+                        <span>轨迹分析</span>
+                    </a>
+                    <a href="{{ url_for('enhanced_phase_portrait') }}" class="sidebar-nav-item" data-tooltip="增强相图">
+                        <i class="fas fa-expand-arrows-alt"></i>
+                        <span>增强相图</span>
+                    </a>
+                </div>
+
+                <!-- 高级功能 -->
+                <div class="sidebar-nav-group">
+                    <div class="sidebar-nav-label">高级功能</div>
+                    <a href="{{ url_for('chaos_analysis') }}" class="sidebar-nav-item" data-tooltip="混沌分析">
+                        <i class="fas fa-circle-notch"></i>
+                        <span>混沌分析</span>
+                    </a>
+                    <a href="{{ url_for('discrete_analysis') }}" class="sidebar-nav-item" data-tooltip="离散系统">
+                        <i class="fas fa-project-diagram"></i>
+                        <span>离散系统</span>
+                    </a>
+                    <a href="{{ url_for('discrete_applications') }}" class="sidebar-nav-item" data-tooltip="实际应用">
+                        <i class="fas fa-flask"></i>
+                        <span>实际应用</span>
+                    </a>
+                </div>
+
+                <!-- 文档 -->
+                <div class="sidebar-nav-group">
+                    <div class="sidebar-nav-label">文档</div>
+                    <a href="#" class="sidebar-nav-item" data-tooltip="数据库">
+                        <i class="fas fa-database"></i>
+                        <span>数据库</span>
+                    </a>
+                    <a href="#" class="sidebar-nav-item" data-tooltip="报告">
+                        <i class="fas fa-file-alt"></i>
+                        <span>报告</span>
+                    </a>
+                    <a href="#" class="sidebar-nav-item" data-tooltip="帮助">
+                        <i class="fas fa-question-circle"></i>
+                        <span>帮助</span>
+                    </a>
+                </div>
+            </nav>
+
+            <!-- User Profile -->
+            <div class="sidebar-user">
+                <div class="sidebar-user-avatar">CN</div>
+                <div class="sidebar-user-info">
+                    <div class="sidebar-user-name">shadcn</div>
+                    <div class="sidebar-user-email">m@example.com</div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content-horizontal">
+            <!-- Original Index.html Content Goes Here -->
+            <div class="header">
+                <h1><i class="fas fa-atom"></i> 智能动力学系统分析器</h1>
+                <p>高级2D线性与非线性系统可视化与分析平台</p>
+            </div>
+
+            <!-- System Introduction Cards -->
+            <section class="system-intro-section">
+                <h2><i class="fas fa-rocket"></i> 系统功能</h2>
+                <div class="system-cards">
+                    <!-- Linear Systems Card -->
+                    <div class="system-card linear-card card-3d-tilt card-hover-scale">
+                        <div class="card-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h3>线性系统分析</h3>
+                        <p>分析2D线性微分方程系统的特征值、稳定性与相图</p>
+                        <ul>
+                            <li><i class="fas fa-check-circle"></i> 特征值分析</li>
+                            <li><i class="fas fa-check-circle"></i> 稳定性判断</li>
+                            <li><i class="fas fa-check-circle"></i> 相图生成</li>
+                            <li><i class="fas fa-check-circle"></i> 数学推导</li>
+                        </ul>
+                        <div class="card-actions">
+                            <a href="{{ url_for('phase_portrait') }}" class="card-btn primary btn-ripple btn-press">
+                                <i class="fas fa-arrow-right"></i> 开始分析
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Nonlinear Systems Card -->
+                    <div class="system-card nonlinear-card card-3d-tilt card-hover-scale">
+                        <div class="card-icon">
+                            <i class="fas fa-wave-square"></i>
+                        </div>
+                        <h3>非线性系统分析</h3>
+                        <p>处理非线性微分方程，分析平衡点与轨迹行为</p>
+                        <ul>
+                            <li><i class="fas fa-check-circle"></i> 平衡点求解</li>
+                            <li><i class="fas fa-check-circle"></i> 雅可比矩阵</li>
+                            <li><i class="fas fa-check-circle"></i> 轨迹动画</li>
+                            <li><i class="fas fa-check-circle"></i> 实时计算</li>
+                        </ul>
+                        <div class="card-actions">
+                            <a href="{{ url_for('nonlinear_analysis') }}" class="card-btn secondary btn-ripple btn-press">
+                                <i class="fas fa-arrow-right"></i> 开始分析
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Advanced Tools Card -->
+                    <div class="system-card tools-card card-3d-tilt card-hover-scale">
+                        <div class="card-icon">
+                            <i class="fas fa-tools"></i>
+                        </div>
+                        <h3>高级工具</h3>
+                        <p>混沌系统、离散映射与智能文本生成</p>
+                        <ul>
+                            <li><i class="fas fa-check-circle"></i> 混沌吸引子</li>
+                            <li><i class="fas fa-check-circle"></i> 离散动力学</li>
+                            <li><i class="fas fa-check-circle"></i> 智能生成器</li>
+                            <li><i class="fas fa-check-circle"></i> 实际应用</li>
+                        </ul>
+                        <div class="card-actions">
+                            <a href="{{ url_for('chaos_analysis') }}" class="card-btn accent btn-ripple btn-press">
+                                <i class="fas fa-arrow-right"></i> 探索功能
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Matrix Input Section (from original index.html) -->
+            <section class="matrix-input-section">
+                <h2><i class="fas fa-calculator"></i> 输入系统矩阵</h2>
+                <div class="matrix-container">
+                    <div class="matrix-display">
+                        <span class="bracket-left">[</span>
+                        <div class="matrix-grid">
+                            <input type="number" id="a11" class="matrix-input input-glow" value="1" step="0.1">
+                            <input type="number" id="a12" class="matrix-input input-glow" value="2" step="0.1">
+                            <input type="number" id="a21" class="matrix-input input-glow" value="-2" step="0.1">
+                            <input type="number" id="a22" class="matrix-input input-glow" value="-1" step="0.1">
+                        </div>
+                        <span class="bracket-right">]</span>
+                    </div>
+                    <button id="analyzeBtn" class="analyze-btn btn-ripple btn-press btn-gradient-shift">
+                        <i class="fas fa-play"></i>
+                        开始分析
+                    </button>
+                </div>
+
+                <!-- Presets -->
+                <div class="presets">
+                    <h3>快速预设</h3>
+                    <div class="preset-buttons">
+                        <button class="preset-btn btn-ripple btn-press" onclick="setMatrix(0, 1, -1, 0)">
+                            <i class="fas fa-sync"></i> 中心点
+                        </button>
+                        <button class="preset-btn btn-ripple btn-press" onclick="setMatrix(-1, 1, -1, -1)">
+                            <i class="fas fa-bullseye"></i> 稳定焦点
+                        </button>
+                        <button class="preset-btn btn-ripple btn-press" onclick="setMatrix(1, -2, 2, -1)">
+                            <i class="fas fa-expand-arrows-alt"></i> 鞍点
+                        </button>
+                        <button class="preset-btn btn-ripple btn-press" onclick="setMatrix(1, 2, -2, -1)">
+                            <i class="fas fa-sun"></i> 不稳定焦点
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Results Section (initially hidden) -->
+            <section id="resultsSection" class="results-section" style="display: none;">
+                <h2><i class="fas fa-chart-bar"></i> 分析结果</h2>
+
+                <div class="results-grid">
+                    <!-- 系统信息卡片 -->
+                    <div class="result-card">
+                        <h3><i class="fas fa-info-circle"></i> 系统信息</h3>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <strong>特征值：</strong>
+                                <span id="eigenvaluesDisplay"></span>
+                            </div>
+                            <div class="info-item">
+                                <strong>系统类型：</strong>
+                                <span id="systemTypeDisplay"></span>
+                            </div>
+                            <div class="info-item">
+                                <strong>稳定性：</strong>
+                                <span id="stabilityDisplay"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 快速操作 -->
+                    <div class="result-card">
+                        <h3><i class="fas fa-rocket"></i> 进一步分析</h3>
+                        <div class="action-buttons">
+                            <a href="/phase_portrait" class="action-btn">
+                                <i class="fas fa-chart-line"></i> 查看相图
+                            </a>
+                            <a href="/trajectory" class="action-btn">
+                                <i class="fas fa-route"></i> 轨迹动画
+                            </a>
+                            <a href="/enhanced_phase_portrait" class="action-btn">
+                                <i class="fas fa-expand-arrows-alt"></i> 增强分析
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="{{ url_for('static', filename='js/theme-toggle.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/layout-horizontal.js') }}"></script>
+
+    <!-- Animation Scripts -->
+    <script src="{{ url_for('static', filename='js/particles.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/animation-core.js') }}" defer></script>
+    <script>
+        // Matrix preset function
+        function setMatrix(a11, a12, a21, a22) {
+            document.getElementById('a11').value = a11;
+            document.getElementById('a12').value = a12;
+            document.getElementById('a21').value = a21;
+            document.getElementById('a22').value = a22;
+        }
+
+        // 系统类型分析函数
+        function analyzeSystemType(eigenvalues) {
+            const ev1 = eigenvalues[0];
+            const ev2 = eigenvalues[1];
+
+            // 判断特征值类型
+            const hasComplexEigenvalues = ev1.imag !== 0 || ev2.imag !== 0;
+            const realParts = [ev1.real, ev2.real];
+            const maxReal = Math.max(...realParts);
+            const minReal = Math.min(...realParts);
+
+            let type = '';
+            let stability = '';
+
+            if (hasComplexEigenvalues) {
+                // 复特征值
+                if (Math.abs(ev1.real) < 1e-10) {
+                    type = '中心点 (Center)';
+                    stability = '中性稳定 (Neutrally Stable)';
+                } else if (ev1.real > 0) {
+                    type = '不稳定螺旋点 (Unstable Spiral)';
+                    stability = '不稳定 (Unstable)';
+                } else {
+                    type = '稳定螺旋点 (Stable Spiral)';
+                    stability = '渐近稳定 (Asymptotically Stable)';
+                }
+            } else {
+                // 实特征值
+                if (minReal * maxReal < 0) {
+                    type = '鞍点 (Saddle Point)';
+                    stability = '不稳定 (Unstable)';
+                } else if (maxReal > 0) {
+                    type = '不稳定节点 (Unstable Node)';
+                    stability = '不稳定 (Unstable)';
+                } else if (maxReal < 0) {
+                    type = '稳定节点 (Stable Node)';
+                    stability = '渐近稳定 (Asymptotically Stable)';
+                } else {
+                    type = '非孤立平衡点 (Non-isolated Equilibrium)';
+                    stability = '临界情况 (Critical Case)';
+                }
+            }
+
+            return { type, stability };
+        }
+
+        // Analyze button handler - 确保在DOM加载完成后执行
+        document.addEventListener('DOMContentLoaded', function() {
+            const analyzeBtn = document.getElementById('analyzeBtn');
+            if (!analyzeBtn) {
+                console.error('analyzeBtn not found!');
+                return;
+            }
+
+            analyzeBtn.addEventListener('click', function(e) {
+                console.log('分析按钮被点击');
+
+                const a11 = parseFloat(document.getElementById('a11').value);
+                const a12 = parseFloat(document.getElementById('a12').value);
+                const a21 = parseFloat(document.getElementById('a21').value);
+                const a22 = parseFloat(document.getElementById('a22').value);
+
+                // Call API to analyze
+                fetch('/api/analyze_system', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        matrix: [[a11, a12], [a21, a22]]
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Display results
+                    console.log('Analysis results:', data);
+
+                    if (data.success) {
+                        // 分析系统类型
+                        const systemInfo = analyzeSystemType(data.eigenvalues);
+
+                        // 显示特征值
+                        const eigenvaluesText = data.eigenvalues.map(ev => ev.formatted).join(', ');
+                        document.getElementById('eigenvaluesDisplay').textContent = eigenvaluesText;
+
+                        // 显示系统类型和稳定性
+                        document.getElementById('systemTypeDisplay').textContent = systemInfo.type;
+                        document.getElementById('stabilityDisplay').textContent = systemInfo.stability;
+
+                        // 显示结果区域
+                        document.getElementById('resultsSection').style.display = 'block';
+
+                        // 平滑滚动到结果区域
+                        document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('分析失败,请检查输入值');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

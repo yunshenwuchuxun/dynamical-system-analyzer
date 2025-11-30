@@ -1,0 +1,84 @@
+/* 相图页面专用布局优化 */
+
+/* 页面整体容器 */
+.main-content-horizontal {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* 标题区域优化 */
+.header {
+    max-width: 1200px;
+    margin: 0 auto 30px;
+}
+
+/* 控制面板优化 */
+.controls-section {
+    max-width: 1200px;
+    margin: 0 auto 30px;
+}
+
+/* 相图显示区域优化 */
+.portrait-section {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.portrait-container {
+    min-height: 400px;
+    max-height: 700px;
+    overflow: hidden;
+}
+
+.portrait-container img {
+    max-width: 100%;
+    max-height: 650px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+}
+
+/* 信息面板优化 */
+.portrait-info {
+    max-width: 1200px;
+    margin: 20px auto 0;
+}
+
+/* 响应式优化 */
+@media (max-width: 1300px) {
+    .main-content-horizontal,
+    .header,
+    .controls-section,
+    .portrait-section,
+    .portrait-info {
+        max-width: 95%;
+    }
+}
+
+@media (max-width: 768px) {
+    .portrait-container {
+        min-height: 300px;
+        max-height: 500px;
+    }
+
+    .portrait-container img {
+        max-height: 450px;
+    }
+
+    .controls-section {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .portrait-container {
+        padding: 10px;
+        min-height: 250px;
+        max-height: 400px;
+    }
+
+    .portrait-container img {
+        max-height: 350px;
+    }
+}

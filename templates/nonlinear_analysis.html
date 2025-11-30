@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-anim="tilt,ripple">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>非线性系统分析 - 动力学系统分析器</title>    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Lora:wght@400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <!-- Theme CSS (Load First) -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css') }}">
+
+    <!-- Horizontal Layout CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/layout-horizontal.css') }}">
+
+    <!-- Base Styles -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- Help & Tour CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/help.css') }}">
+    <link rel="stylesheet" href="https://unpkg.com/intro.js/minified/introjs.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/themes/light.css">
+</head>
+<body>
+    <!-- Horizontal Layout Container -->
+    <div class="layout-horizontal">
+
+        <!-- Top Navigation Bar -->
+        <nav class="top-navigation">
+            <!-- Left Section -->
+            <div class="top-nav-left">
+                <!-- Sidebar Toggle Button -->
+                <button class="sidebar-toggle-btn" aria-label="切换侧边栏">
+                    <i class="fas fa-bars"></i>
+                </button>
+
+                <!-- App Logo -->
+                <div class="app-logo">
+                    <i class="fas fa-atom"></i>
+                    <span>动力学分析器</span>
+                </div>
+
+                <!-- Horizontal Navigation Tabs -->
+                <div class="top-nav-tabs">
+                    <a href="{{ url_for('index') }}" class="top-nav-tab">
+                        <i class="fas fa-home"></i> 首页
+                    </a>
+                    <a href="{{ url_for('text_generator') }}" class="top-nav-tab">
+                        <i class="fas fa-magic"></i> 智能生成
+                    </a>
+                    <a href="{{ url_for('nonlinear_analysis') }}" class="top-nav-tab active">
+                        <i class="fas fa-wave-square"></i> 非线性
+                    </a>
+                    <a href="{{ url_for('chaos_analysis') }}" class="top-nav-tab">
+                        <i class="fas fa-circle-notch"></i> 混沌分析
+                    </a>
+                    <a href="{{ url_for('discrete_analysis') }}" class="top-nav-tab">
+                        <i class="fas fa-project-diagram"></i> 离散系统
+                    </a>
+                </div>
+            </div>
+
+            <!-- Right Section -->
+            <div class="top-nav-right">
+                <!-- Theme Toggle -->
+                <button class="top-nav-action" data-theme-toggle aria-label="切换主题">
+                    <i class="fas fa-moon"></i>
+                </button>
+
+                <!-- Notifications -->
+                <button class="top-nav-action" aria-label="通知">
+                    <i class="fas fa-bell"></i>
+                </button>
+
+                <!-- Settings -->
+                <button class="top-nav-action" aria-label="设置">
+                    <i class="fas fa-cog"></i>
+                </button>
+
+                <!-- Mobile Hamburger Menu -->
+                <button class="hamburger-menu" aria-label="菜单">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Collapsible Sidebar -->
+        <aside class="collapsible-sidebar">
+            <!-- Sidebar Navigation -->
+            <nav class="sidebar-nav">
+                <!-- 快速操作 -->
+                <div class="sidebar-nav-group">
+                    <div class="sidebar-nav-label">快速操作</div>
+                    <a href="{{ url_for('index') }}" class="sidebar-nav-item" data-tooltip="主页">
+                        <i class="fas fa-home"></i>
+                        <span>主页</span>
+                    </a>
+                    <a href="{{ url_for('text_generator') }}" class="sidebar-nav-item" data-tooltip="智能生成">
+                        <i class="fas fa-magic"></i>
+                        <span>智能生成</span>
+                    </a>
+                </div>
+
+                <!-- 系统分析 -->
+                <div class="sidebar-nav-group">
+                    <div class="sidebar-nav-label">系统分析</div>
+                    <a href="{{ url_for('phase_portrait') }}" class="sidebar-nav-item" data-tooltip="线性系统">
+                        <i class="fas fa-chart-line"></i>
+                        <span>线性系统</span>
+                    </a>
+                    <a href="{{ url_for('nonlinear_analysis') }}" class="sidebar-nav-item active" data-tooltip="非线性系统">
+                        <i class="fas fa-wave-square"></i>
+                        <span>非线性系统</span>
+                    </a>
+                    <a href="{{ url_for('trajectory') }}" class="sidebar-nav-item" data-tooltip="轨迹分析">
+                        <i class="fas fa-route"></i>
+                        <span>轨迹分析</span>
+                    </a>
+                    <a href="{{ url_for('enhanced_phase_portrait') }}" class="sidebar-nav-item" data-tooltip="增强相图">
+                        <i class="fas fa-expand-arrows-alt"></i>
+                        <span>增强相图</span>
+                    </a>
+                </div>
+
+                <!-- 高级功能 -->
+                <div class="sidebar-nav-group">
+                    <div class="sidebar-nav-label">高级功能</div>
+                    <a href="{{ url_for('chaos_analysis') }}" class="sidebar-nav-item" data-tooltip="混沌分析">
+                        <i class="fas fa-circle-notch"></i>
+                        <span>混沌分析</span>
+                    </a>
+                    <a href="{{ url_for('discrete_analysis') }}" class="sidebar-nav-item" data-tooltip="离散系统">
+                        <i class="fas fa-project-diagram"></i>
+                        <span>离散系统</span>
+                    </a>
+                    <a href="{{ url_for('discrete_applications') }}" class="sidebar-nav-item" data-tooltip="实际应用">
+                        <i class="fas fa-flask"></i>
+                        <span>实际应用</span>
+                    </a>
+                </div>
+
+                <!-- 文档 -->
+                <div class="sidebar-nav-group">
+                    <div class="sidebar-nav-label">文档</div>
+                    <a href="#" class="sidebar-nav-item" data-tooltip="数据库">
+                        <i class="fas fa-database"></i>
+                        <span>数据库</span>
+                    </a>
+                    <a href="#" class="sidebar-nav-item" data-tooltip="报告">
+                        <i class="fas fa-file-alt"></i>
+                        <span>报告</span>
+                    </a>
+                    <a href="#" class="sidebar-nav-item" data-tooltip="帮助">
+                        <i class="fas fa-question-circle"></i>
+                        <span>帮助</span>
+                    </a>
+                </div>
+            </nav>
+
+            <!-- User Profile -->
+            <div class="sidebar-user">
+                <div class="sidebar-user-avatar">CN</div>
+                <div class="sidebar-user-info">
+                    <div class="sidebar-user-name">shadcn</div>
+                    <div class="sidebar-user-email">m@example.com</div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content-horizontal">
+            <header class="header">
+                <h1><i class="fas fa-chart-line"></i> 非线性系统分析</h1>
+                <p>分析非线性微分方程的相图和轨迹</p>
+                <div class="header-actions">
+                    <button id="startTourBtn" class="help-btn" aria-label="新手引导">
+                        <i class="fas fa-question-circle"></i> 新手引导
+                    </button>
+                </div>
+            </header>
+            <!-- 方程输入区域 -->
+            <div class="nonlinear-input-section">
+                <h2><i class="fas fa-function"></i> 输入非线性微分方程</h2>
+                
+                <div class="equation-display">
+                    <div class="equation-row">
+                        <span class="equation-label">dx/dt = </span>
+                        <input type="text" id="dxdtInput" class="equation-input" placeholder="例如: -y + x*(1-x^2-y^2)" />
+                    </div>
+                    <div class="equation-row">
+                        <span class="equation-label">dy/dt = </span>
+                        <input type="text" id="dydtInput" class="equation-input" placeholder="例如: x + y*(1-x^2-y^2)" />
+                    </div>
+                </div>
+
+                <!-- 数学函数快捷按钮 -->
+                <div class="math-functions">
+                    <h3>数学函数快捷输入:</h3>
+                    <div class="function-buttons">
+                        <button class="func-btn" data-func="sin">sin</button>
+                        <button class="func-btn" data-func="cos">cos</button>
+                        <button class="func-btn" data-func="tan">tan</button>
+                        <button class="func-btn" data-func="exp">exp</button>
+                        <button class="func-btn" data-func="log">log</button>
+                        <button class="func-btn" data-func="sqrt">sqrt</button>
+                        <button class="func-btn" data-func="abs">abs</button>
+                        <button class="func-btn" data-func="^2">²</button>
+                        <button class="func-btn" data-func="^3">³</button>
+                        <button class="func-btn" data-func="pi">π</button>
+                        <button class="func-btn" data-func="e">e</button>
+                        <button class="func-btn" data-func="x">x</button>
+                        <button class="func-btn" data-func="y">y</button>
+                        <button class="func-btn" data-func="(">(</button>
+                        <button class="func-btn" data-func=")">)</button>
+                        <button class="func-btn" data-func="+">+</button>
+                        <button class="func-btn" data-func="-">−</button>
+                        <button class="func-btn" data-func="*">×</button>
+                        <button class="func-btn" data-func="/">÷</button>
+                    </div>
+                </div>
+
+                <!-- 预设方程 -->
+                <div class="equation-presets">
+                    <h3>预设非线性系统:</h3>
+                    <div class="preset-equation-buttons">
+                        <button class="preset-eq-btn" data-dx="-y + x*(1-x^2-y^2)" data-dy="x + y*(1-x^2-y^2)">
+                            <i class="fas fa-circle-notch"></i> 极限环
+                        </button>
+                        <button class="preset-eq-btn" data-dx="y" data-dy="-sin(x)">
+                            <i class="fas fa-pendulum"></i> 单摆
+                        </button>
+                        <button class="preset-eq-btn" data-dx="x*(1-x^2-y^2)" data-dy="-y*(1-x^2-y^2)">
+                            <i class="fas fa-bullseye"></i> 稳定极限环
+                        </button>
+                        <button class="preset-eq-btn" data-dx="y" data-dy="-x - 0.1*y*(x^2-1)">
+                            <i class="fas fa-wave-square"></i> Van der Pol振子
+                        </button>
+                        <button class="preset-eq-btn" data-dx="x - x^3 - y" data-dy="x">
+                            <i class="fas fa-atom"></i> Duffing振子
+                        </button>
+                        <button class="preset-eq-btn" data-dx="y" data-dy="-x^3">
+                            <i class="fas fa-bezier-curve"></i> 非线性中心
+                        </button>
+                    </div>
+                </div>
+
+                <div class="analyze-controls">
+                    <button id="analyzeNonlinearBtn" class="analyze-btn">
+                        <i class="fas fa-chart-area"></i> 分析系统
+                    </button>
+                    <button id="clearEquationsBtn" class="clear-btn">
+                        <i class="fas fa-eraser"></i> 清空
+                    </button>
+                </div>
+            </div>
+
+            <!-- 分析结果区域 -->
+            <div class="nonlinear-results-section" id="nonlinearResultsSection" style="display: none;">
+                <!-- 信息面板 -->
+                <div class="system-analysis-info">
+                    <h3><i class="fas fa-info-circle"></i> 系统分析</h3>
+                    <div class="analysis-grid">
+                        <div class="analysis-item">
+                            <strong>平衡点:</strong>
+                            <div id="equilibriumPoints"></div>
+                        </div>
+                        <div class="analysis-item">
+                            <strong>系统类型:</strong>
+                            <div id="systemTypeNonlinear"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 可视化区域 -->
+                <div class="visualization-grid">
+                    <!-- 相图 -->
+                    <div class="phase-portrait-panel">
+                        <h3><i class="fas fa-chart-area"></i> 相图</h3>
+                        <div class="portrait-container" id="nonlinearPortraitContainer">
+                            <div class="placeholder">
+                                <i class="fas fa-spinner fa-spin"></i>
+                                <p>正在生成相图...</p>
+                            </div>
+                        </div>
+                        <div class="phase-controls">
+                            <label>网格密度: 
+                                <input type="range" id="gridDensitySlider" min="10" max="40" value="20" class="slider">
+                                <span id="gridDensityValue">20</span>
+                            </label>
+                            <label>视图范围: 
+                                <input type="range" id="viewRangeSlider" min="2" max="10" value="5" step="0.5" class="slider">
+                                <span id="viewRangeValue">5</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- 轨迹动画 -->
+                    <div class="trajectory-panel">
+                        <h3><i class="fas fa-route"></i> 轨迹动画</h3>
+                        <div class="canvas-container">
+                            <canvas id="nonlinearTrajectoryCanvas" width="500" height="400"></canvas>
+                            <div class="canvas-overlay">
+                                <div class="axis-labels">
+                                    <span class="x-label">x</span>
+                                    <span class="y-label">y</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 动画控制 -->
+                        <div class="animation-controls">
+                            <div class="control-buttons">
+                                <button id="playNonlinearBtn" class="control-btn play">
+                                    <i class="fas fa-play"></i>
+                                </button>
+                                <button id="pauseNonlinearBtn" class="control-btn pause" disabled>
+                                    <i class="fas fa-pause"></i>
+                                </button>
+                                <button id="resetNonlinearBtn" class="control-btn reset">
+                                    <i class="fas fa-redo"></i>
+                                </button>
+                                <button id="clearTrajectoriesBtn" class="control-btn clear">
+                                    <i class="fas fa-broom"></i>
+                                </button>
+                            </div>
+
+                            <div class="initial-point-controls">
+                                <label>初始点:</label>
+                                <input type="number" id="initialXNonlinear" placeholder="X" value="1" step="0.1" class="coord-input">
+                                <input type="number" id="initialYNonlinear" placeholder="Y" value="1" step="0.1" class="coord-input">
+                                <button id="addTrajectoryBtn" class="control-btn add">
+                                    <i class="fas fa-plus"></i> 添加轨迹
+                                </button>
+                            </div>
+
+                            <div class="time-controls">
+                                <label>时间跨度: 
+                                    <input type="range" id="timeSpanSlider" min="5" max="50" value="20" class="slider">
+                                    <span id="timeSpanValue">20</span>s
+                                </label>
+                                <label>动画速度: 
+                                    <input type="range" id="speedNonlinearSlider" min="1" max="10" value="5" class="slider">
+                                    <span id="speedNonlinearValue">5</span>x
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- 轨迹列表 -->
+                        <div class="trajectory-list">
+                            <h4>轨迹列表:</h4>
+                            <div id="nonlinearTrajectoryList" class="trajectory-items">
+                                <p class="no-trajectories">点击画布或使用"添加轨迹"按钮开始</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <div class="loading-overlay" id="loadingOverlay">
+            <div class="loading-spinner">
+                <i class="fas fa-spinner fa-spin"></i>
+                <p>分析中...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="{{ url_for('static', filename='js/theme-toggle.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/layout-horizontal.js') }}"></script>
+    <!-- Help & Tour Libraries -->
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://unpkg.com/tippy.js@6"></script>
+    <script src="https://unpkg.com/intro.js/minified/intro.min.js"></script>
+    <!-- Help System -->
+    <script src="{{ url_for('static', filename='js/help_system.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/nonlinear_analysis.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/particles.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/animation-core.js') }}" defer></script>
+</body>
+</html>
