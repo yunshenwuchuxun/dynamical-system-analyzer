@@ -2,7 +2,10 @@
 
 一个基于 Flask 的智能动力学系统分析 Web 应用，支持 2D/3D 线性和非线性动力学系统的分析、可视化、混沌分析和离散系统应用。
 
-[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/your-template-id)
+[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/dynsys-analyzer)
+![Python](https://img.shields.io/badge/python-3.11-blue.svg)
+![Flask](https://img.shields.io/badge/flask-3.0.3-green.svg)
+![License](https://img.shields.io/badge/license-MIT-orange.svg)
 
 ## 功能特性
 
@@ -50,7 +53,7 @@
 
 1. 克隆仓库
 ```bash
-git clone https://github.com/your-username/dynamical-system-analyzer.git
+git clone https://github.com/yunshenwuchuxun/dynamical-system-analyzer.git
 cd dynamical-system-analyzer
 ```
 
@@ -73,7 +76,10 @@ python app.py
 
 点击下方按钮直接部署到 Railway：
 
-[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/your-template-id)
+[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/dynsys-analyzer)
+![Python](https://img.shields.io/badge/python-3.11-blue.svg)
+![Flask](https://img.shields.io/badge/flask-3.0.3-green.svg)
+![License](https://img.shields.io/badge/license-MIT-orange.svg)
 
 ### 方法 2: 从 GitHub 手动部署
 
@@ -265,9 +271,15 @@ Railway 平台：
 
 ## 联系方式
 
-- GitHub: [@your-username](https://github.com/your-username)
+- GitHub: [@yunshenwuchuxun](https://github.com/yunshenwuchuxun)
 - Email: 2060979047@qq.com
 
 ---
 
 **注意**: 本项目用于教育和学习目的，动力学系统分析结果仅供参考。
+
+## 详细文档
+
+- [Railway 部署指南](RAILWAY_DEPLOYMENT.md) - 完整的 Railway 部署文档
+- [开发文档](CLAUDE.md) - 项目架构和开发指南
+- [主题指南](THEME_GUIDE.md) - Neobrutalism 主题系统
