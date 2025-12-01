@@ -15,20 +15,71 @@ import sympy as sp
 from sympy import symbols, lambdify, diff
 import warnings
 warnings.filterwarnings('ignore')
+from matplotlib.font_manager import FontProperties, fontManager
+import urllib.request
+import tempfile
 
-# 设置中文字体 - 多平台支持
-# Windows: SimHei, Microsoft YaHei
-# macOS: STHeiti, PingFang SC
-# Linux: WenQuanYi Micro Hei, Noto Sans CJK
-plt.rcParams['font.sans-serif'] = [
-    'SimHei',           # Windows 黑体
-    'Microsoft YaHei',  # Windows 微软雅黑
-    'STHeiti',          # macOS 华文黑体
-    'PingFang SC',      # macOS 苹方简体
-    'WenQuanYi Micro Hei',  # Linux 文泉驿微米黑
-    'Noto Sans CJK SC',     # Linux 思源黑体简体
-    'DejaVu Sans'       # 最终回退（仅支持拉丁字符）
-]
+# 智能字体检测和下载配置
+def setup_chinese_font():
+    """
+    智能检测或下载中文字体，确保中文能够正常显示
+    """
+    # 获取系统所有字体
+    available_fonts = set([f.name for f in fontManager.ttflist])
+
+    # 优先级字体列表
+    priority_fonts = [
+        'SimHei', 'Microsoft YaHei', 'SimSun', 'KaiTi',  # Windows
+        'STHeiti', 'PingFang SC', 'Heiti SC',  # macOS
+        'WenQuanYi Micro Hei', 'WenQuanYi Zen Hei',  # Linux
+        'Noto Sans CJK SC', 'Noto Sans CJK TC',
+        'AR PL UMing CN', 'Droid Sans Fallback'
+    ]
+
+    # 检测可用的中文字体
+    detected_fonts = [font for font in priority_fonts if font in available_fonts]
+
+    if detected_fonts:
+        print(f"✓ 检测到可用中文字体：{detected_fonts[0]}")
+        return detected_fonts
+
+    # 如果没有中文字体，尝试下载并使用开源字体
+    print("⚠ 未检测到中文字体，尝试下载开源字体...")
+
+    try:
+        # 使用 GitHub 上的开源中文字体（思源黑体 Noto Sans SC）
+        font_url = "https://github.com/googlefonts/noto-cjk/raw/main/Sans/OTF/SimplifiedChinese/NotoSansCJKsc-Regular.otf"
+
+        # 下载到临时目录
+        temp_dir = tempfile.gettempdir()
+        font_path = os.path.join(temp_dir, "NotoSansCJKsc-Regular.otf")
+
+        if not os.path.exists(font_path):
+            print(f"正在下载字体到 {font_path}...")
+            urllib.request.urlretrieve(font_url, font_path)
+            print("✓ 字体下载成功")
+
+        # 注册字体到 Matplotlib
+        from matplotlib.font_manager import fontManager
+        fontManager.addfont(font_path)
+
+        # 获取字体名称
+        prop = FontProperties(fname=font_path)
+        font_name = prop.get_name()
+        print(f"✓ 已加载字体：{font_name}")
+
+        return [font_name, 'DejaVu Sans']
+
+    except Exception as e:
+        print(f"✗ 字体下载失败：{e}")
+        print("将使用默认字体，中文将显示为方框")
+        return ['DejaVu Sans']
+
+# 初始化字体配置
+AVAILABLE_FONTS = setup_chinese_font()
+
+# 设置中文字体 - 基于检测结果
+plt.rcParams['font.sans-serif'] = AVAILABLE_FONTS
 plt.rcParams['axes.unicode_minus'] = False  # 解决负号显示问题
 
 # 辅助函数：设置绘图样式和中文字体
@@ -39,15 +90,7 @@ def setup_plot_style():
     """
     plt.style.use('seaborn-v0_8-whitegrid')
     # 重新设置中文字体（plt.style.use会覆盖全局配置）
-    plt.rcParams['font.sans-serif'] = [
-        'SimHei',           # Windows 黑体
-        'Microsoft YaHei',  # Windows 微软雅黑
-        'STHeiti',          # macOS 华文黑体
-        'PingFang SC',      # macOS 苹方简体
-        'WenQuanYi Micro Hei',  # Linux 文泉驿微米黑
-        'Noto Sans CJK SC',     # Linux 思源黑体简体
-        'DejaVu Sans'       # 最终回退（仅支持拉丁字符）
-    ]
+    plt.rcParams['font.sans-serif'] = AVAILABLE_FONTS
     plt.rcParams['axes.unicode_minus'] = False  # 解决负号显示问题
 
 app = Flask(__name__)

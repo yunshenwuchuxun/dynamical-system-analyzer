@@ -1,4 +1,4 @@
-# GitHub 和 Railway 部署指南
+# GitHub 和 Render 部署指南
 
 ## 第一步：创建 GitHub 仓库
 
@@ -55,57 +55,46 @@ gh repo create dynamical-system-analyzer --private --source=. --remote=origin --
    访问 `https://github.com/your-username/dynamical-system-analyzer` 
    确认所有文件已上传
 
-## 第二步：部署到 Railway
+## 第二步：部署到 Render
 
 ### 方法 1: 从 GitHub 部署（推荐）
 
-1. **访问 Railway**
-   - 打开 https://railway.app
+1. **访问 Render**
+   - 打开 https://render.com
    - 使用 GitHub 账号登录
 
 2. **创建新项目**
-   - 点击 "New Project"
-   - 选择 "Deploy from GitHub repo"
-   - 授权 Railway 访问你的 GitHub 账号
+   - 点击 "New +"
+   - 选择 "Web Service"
+   - 授权 Render 访问你的 GitHub 账号
    - 选择 `dynamical-system-analyzer` 仓库
 
-3. **自动部署**
-   - Railway 会自动检测到：
+3. **配置 Web Service**
+   - Name: `dynamical-system-analyzer`
+   - Environment: `Python 3`
+   - Region: 选择最近的区域
+   - Branch: `main`
+   - Build Command: `pip install -r requirements.txt`
+   - Start Command: `gunicorn app:app --bind 0.0.0.0:$PORT`
+
+4. **自动部署**
+   - Render 会自动检测到：
      - `Procfile` - 启动命令
-     - `railway.json` - 部署配置
      - `requirements.txt` - Python 依赖
      - `runtime.txt` - Python 版本
    - 部署过程会自动开始
 
-4. **等待部署完成**
+5. **等待部署完成**
    - 查看实时日志了解部署进度
    - 部署成功后会显示绿色勾号
 
-5. **生成公开域名**
-   - 点击 "Settings" → "Networking"
-   - 点击 "Generate Domain"
-   - Railway 会生成一个 `.up.railway.app` 域名
-   - 或者添加自定义域名
+6. **生成公开域名**
+   - Render 会自动生成一个 `.onrender.com` 域名
+   - 或者在 Settings 中添加自定义域名
 
-6. **访问应用**
+7. **访问应用**
    - 点击生成的域名
    - 你的动力学系统分析器现在已在线运行！
-
-### 方法 2: Railway CLI 部署
-
-```bash
-# 安装 Railway CLI
-npm i -g @railway/cli
-
-# 登录
-railway login
-
-# 初始化项目
-railway init
-
-# 部署
-railway up
-```
 
 ## 第三步：验证部署
 
@@ -165,17 +154,17 @@ cat ~/.ssh/id_ed25519.pub
 git remote set-url origin git@github.com:your-username/dynamical-system-analyzer.git
 ```
 
-### 问题 2: Railway 部署失败
+### 问题 2: Render 部署失败
 
 **检查清单:**
 
 1. **查看构建日志**
-   - Railway 面板 → Deployments → 点击失败的部署
+   - Render 面板 → Logs → 查看失败的部署
    - 查看详细错误信息
 
 2. **确认文件存在**
    ```bash
-   ls -la Procfile railway.json requirements.txt runtime.txt
+   ls -la Procfile requirements.txt runtime.txt
    ```
 
 3. **验证 requirements.txt**
@@ -186,7 +175,7 @@ git remote set-url origin git@github.com:your-username/dynamical-system-analyzer
    - `runtime.txt` 中的版本是否支持
 
 5. **手动触发重新部署**
-   - Railway 面板 → Deployments → "Redeploy"
+   - Render 面板 → Manual Deploy → "Deploy latest commit"
 
 ### 问题 3: 部署成功但无法访问
 
@@ -203,9 +192,9 @@ git remote set-url origin git@github.com:your-username/dynamical-system-analyzer
    - 应用应该使用 `$PORT` 环境变量
    - 查看 app.py:2398 确认配置正确
 
-### 问题 4: 中文显示为方框
+**问题: 中文显示为方框**
 
-Railway 环境已包含基本中文字体，但如果仍有问题：
+Render 环境已包含基本中文字体，但如果仍有问题：
 
 ```python
 # app.py 中确认已设置
@@ -226,34 +215,29 @@ git push
 
 ### 自动部署
 
-Railway 会自动检测 GitHub 仓库的更新并重新部署：
+Render 会自动检测 GitHub 仓库的更新并重新部署：
 - 推送到 `main` 分支后
-- Railway 自动拉取新代码
+- Render 自动拉取新代码
 - 自动重新构建和部署
 - 通常 2-5 分钟内完成
 
 ### 手动触发部署
 
 如果自动部署未触发：
-1. Railway 面板 → Deployments
-2. 点击 "Redeploy"
+1. Render 面板 → Manual Deploy
+2. 点击 "Deploy latest commit"
 3. 选择最新的提交
 
 ## 监控和日志
 
 ### 查看实时日志
 
-```bash
-# 使用 Railway CLI
-railway logs
-```
-
-或在 Railway 网页面板：
-- Deployments → 选择部署 → View Logs
+在 Render 网页面板：
+- Web Service → Logs → View Logs
 
 ### 查看指标
 
-Railway 面板 → Metrics 标签：
+Render 面板 → Metrics 标签：
 - CPU 使用率
 - 内存使用
 - 网络流量
@@ -261,9 +245,9 @@ Railway 面板 → Metrics 标签：
 
 ## 成本估算
 
-Railway 提供：
-- **免费计划**: $5 免费额度/月
-- **按使用付费**: 超出免费额度后按实际使用计费
+Render 提供：
+- **免费计划**: 750 小时/月免费
+- **付费计划**: Starter ($7/月), Standard ($25/月)
 
 本应用预估资源使用：
 - 内存: ~300MB
@@ -275,16 +259,16 @@ Railway 提供：
 ### 可选增强功能
 
 1. **自定义域名**
-   - Railway Settings → Networking → Custom Domain
+   - Render Settings → Custom Domain
    - 添加你自己的域名
 
 2. **环境变量**
-   - Railway Settings → Variables
+   - Render Settings → Environment
    - 添加配置（如需要）
 
 3. **数据库（如需要）**
-   - Railway 支持 PostgreSQL, MySQL, MongoDB
-   - 从 "New" 菜单添加数据库服务
+   - Render 支持 PostgreSQL, MySQL, Redis
+   - 从 "New +" 菜单添加数据库服务
 
 4. **持续集成**
    - 添加 GitHub Actions 进行测试
@@ -293,13 +277,13 @@ Railway 提供：
 ### 分享你的应用
 
 部署完成后，你可以分享：
-- 直接分享 Railway 生成的域名
+- 直接分享 Render 生成的域名
 - 在 GitHub 仓库添加在线演示链接
 - 更新 README.md 中的部署按钮
 
 ## 需要帮助？
 
-- Railway 文档: https://docs.railway.app
+- Render 文档: https://render.com/docs
 - GitHub 文档: https://docs.github.com
 - 项目问题: 在 GitHub 仓库创建 Issue
 

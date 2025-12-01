@@ -2,8 +2,8 @@
 
 一个基于 Flask 的智能动力学系统分析 Web 应用，支持 2D/3D 线性和非线性动力学系统的分析、可视化、混沌分析和离散系统应用。
 
-[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/dynsys-analyzer)
-![Python](https://img.shields.io/badge/python-3.11-blue.svg)
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy)
+![Python](https://img.shields.io/badge/python-3.9-blue.svg)
 ![Flask](https://img.shields.io/badge/flask-3.0.3-green.svg)
 ![License](https://img.shields.io/badge/license-MIT-orange.svg)
 
@@ -70,32 +70,32 @@ python app.py
 4. 访问应用
 打开浏览器访问 `http://localhost:5001`
 
-## Railway 一键部署
+## Render 一键部署
 
 ### 方法 1: 使用部署按钮（推荐）
 
-点击下方按钮直接部署到 Railway：
+点击下方按钮直接部署到 Render：
 
-[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/dynsys-analyzer)
-![Python](https://img.shields.io/badge/python-3.11-blue.svg)
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy)
+![Python](https://img.shields.io/badge/python-3.9-blue.svg)
 ![Flask](https://img.shields.io/badge/flask-3.0.3-green.svg)
 ![License](https://img.shields.io/badge/license-MIT-orange.svg)
 
 ### 方法 2: 从 GitHub 手动部署
 
-1. 访问 [Railway.app](https://railway.app/)
+1. 访问 [Render.com](https://render.com/)
 2. 使用 GitHub 账号登录
-3. 点击 "New Project"
-4. 选择 "Deploy from GitHub repo"
+3. 点击 "New +" → "Web Service"
+4. 选择 "Connect a repository"
 5. 选择本仓库
-6. Railway 会自动检测配置并开始部署
+6. Render 会自动检测配置并开始部署
 7. 部署完成后，点击生成的域名访问应用
 
 ### 环境变量配置
 
-Railway 会自动设置以下环境变量：
+Render 会自动设置以下环境变量：
 - `PORT` - 应用监听端口（自动分配）
-- `RAILWAY_ENVIRONMENT` - 标识为 Railway 生产环境
+- `RENDER` - 标识为 Render 生产环境
 
 无需手动配置任何环境变量。
 
@@ -108,23 +108,9 @@ Railway 会自动设置以下环境变量：
   web: gunicorn app:app
   ```
 
-- **`railway.json`** - Railway 平台配置
-  ```json
-  {
-    "build": {
-      "builder": "NIXPACKS"
-    },
-    "deploy": {
-      "startCommand": "gunicorn app:app --bind 0.0.0.0:$PORT",
-      "restartPolicyType": "ON_FAILURE",
-      "restartPolicyMaxRetries": 10
-    }
-  }
-  ```
-
 - **`runtime.txt`** - Python 版本
   ```
-  python-3.11.0
+  python-3.9.23
   ```
 
 ## 项目结构
@@ -133,8 +119,7 @@ Railway 会自动设置以下环境变量：
 .
 ├── app.py                          # Flask 主应用
 ├── requirements.txt                # Python 依赖
-├── Procfile                        # Railway 启动配置
-├── railway.json                    # Railway 部署配置
+├── Procfile                        # Render 启动配置
 ├── runtime.txt                     # Python 版本
 ├── CLAUDE.md                       # 项目文档
 ├── templates/                      # HTML 模板
@@ -220,7 +205,7 @@ Railway 会自动设置以下环境变量：
 ### 常见问题
 
 **问题: 部署后无法访问**
-- 检查 Railway 日志确认应用已启动
+- 检查 Render 日志确认应用已启动
 - 确认域名已正确生成
 - 检查防火墙设置
 
@@ -230,16 +215,15 @@ Railway 会自动设置以下环境变量：
 - 查看浏览器控制台错误信息
 
 **问题: 中文显示为方框**
-- Railway 环境已包含中文字体支持
+- Render 环境已包含中文字体支持
 - 如仍有问题，检查 `plt.rcParams['font.sans-serif']` 设置
 
 ### 查看日志
 
-Railway 平台：
-1. 进入项目面板
-2. 点击 "Deployments"
-3. 选择最新部署
-4. 查看实时日志输出
+Render 平台：
+1. 进入 Web Service 页面
+2. 点击 "Logs"
+3. 查看实时日志输出
 
 ## 性能优化
 
@@ -267,7 +251,7 @@ Railway 平台：
 - Flask - Web 框架
 - NumPy/SciPy - 科学计算
 - Matplotlib - 数据可视化
-- Railway - 部署平台
+- Render - 部署平台
 
 ## 联系方式
 
@@ -280,6 +264,6 @@ Railway 平台：
 
 ## 详细文档
 
-- [Railway 部署指南](RAILWAY_DEPLOYMENT.md) - 完整的 Railway 部署文档
+- [Render 部署指南](RENDER_DEPLOYMENT.md) - 完整的 Render 部署文档
 - [开发文档](CLAUDE.md) - 项目架构和开发指南
 - [主题指南](THEME_GUIDE.md) - Neobrutalism 主题系统
