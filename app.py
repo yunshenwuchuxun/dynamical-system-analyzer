@@ -60,7 +60,6 @@ def setup_chinese_font():
             print("✓ 字体下载成功")
 
         # 注册字体到 Matplotlib
-        from matplotlib.font_manager import fontManager
         fontManager.addfont(font_path)
 
         # 获取字体名称
